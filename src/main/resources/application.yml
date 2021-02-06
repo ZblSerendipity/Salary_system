@@ -8,6 +8,6 @@ spring:
     initial-size: 1
     min-idle: 1
     max-active: 20
-mybatis:
-  mapper-locations: classpath:mappers/*Mapper.xml
-  type-aliases-package: com.example.supermarket.ws.domain
+#mybatis:
+#  mapper-locations: classpath:mappers/*Mapper.xml
+#  type-aliases-package: com.example.supermarket.ws.domain
