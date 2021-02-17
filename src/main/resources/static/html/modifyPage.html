@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>工资管理主页</title>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="../layui/css/layui.css"/>
+    <script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+    <script type="text/javascript" src="../layui/layui.js"></script>
+
+</head>
+<body class="layui-layout-body">
+
+<!--顶端导航-->
+
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo ">企业工资管理系统</div>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item" lay-unselect="">
+                <a href="javascript:;"><img src="//t.cn/RCzsdCq" class="layui-nav-img">我</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">公告信息</a></dd>
+
+                </dl>
+            </li>
+            <!--<li class="layui-nav-item">
+                  用户欢迎您！
+            </li>-->
+            <li class="layui-nav-item"><a href="#" style="text-decoration:none">退出登录</a></li>
+        </ul>
+
+    </div>
+
+    <!--侧边栏导航-->
+    <div  class="layui-side layui-bg-black">
+        <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo" style="margin-right: 10px;">
+            <li class="layui-nav-item layui-nav-itemed">
+                <a class="layui-this" href="javascript:;">主页</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;">修改信息</a></dd>
+                </dl>
+            </li>
+            <!--工资信息表，奖惩记录，工资数据图展示过去12个月的工资图-->
+            <li class="layui-nav-item">
+                <a href="javascript:;">我的工资信息</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">公告管理</a>
+            </li>
+            <!--管理员工工资，员工信息-->
+            <li class="layui-nav-item"><a href="javascript:;">员工管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;">员工工资管理</a></dd>
+                </dl>
+            </li>
+
+            <!--角色权限管理-->
+            <li class="layui-nav-item"><a href="javascript:;">角色管理</a></li>
+        </ul>
+    </div>
+
+    <!-- 内容主体区域 -->
+    <div class="layui-body" style="background: #F0F0F0; margin-bottom: -45px;">
+
+        <div style="padding: 50px; padding-top: 100px;">
+
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    个人信息：
+                </div>
+                <div class="layui-card-body">
+                    <img src="//t.cn/RCzsdCq" style="height: 100px; width: 100px; border-radius: 50px;"/>
+                    &emsp;<span>姓名: </span><span id="name">xingming</span>
+                </div>
+                <div class="layui-card-body">
+
+                    <div class="layui-row">
+                        <div class="layui-col-xs3">
+                            <div class="grid-demo grid-demo-bg1">
+                                <i class="layui-icon layui-icon-username" style="font-size: 30px; color: #1E9FFF; margin: 30px;"></i>
+                                <span>职工号: </span><span id="stu_num">xingming</span>&emsp;&emsp;
+                            </div>
+                        </div>
+                        <div class="layui-col-xs3">
+                            <div class="grid-demo">
+                                <i class="layui-icon layui-icon-male" style="font-size: 30px; color: #1E9FFF; margin: 30px;"></i>
+                                <span>性别: </span><span id="gender">gender</span>&emsp;&emsp;
+                            </div>
+                        </div>
+                        <div class="layui-col-xs3">
+                            <div class="grid-demo grid-demo-bg1">
+                                <i class="layui-icon layui-icon-light" style="font-size: 30px; color: #1E9FFF; margin: 30px;"></i>
+                                <span>年龄: </span><span id="age">age</span>&emsp;&emsp;
+                            </div>
+                        </div>
+                        <div class="layui-col-xs3">
+                            <div class="grid-demo">
+                                <i class="layui-icon layui-icon-template-1" style="font-size: 30px; color: #1E9FFF; margin: 30px;"></i>
+                                <span>工龄: </span><span id="seniority">seniority</span>&emsp;&emsp;
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="layui-card-body">
+
+                    <div class="layui-row">
+                        <div class="layui-col-xs3">
+                            <div class="grid-demo grid-demo-bg1">
+                                <i class="layui-icon layui-icon-form" style="font-size: 30px; color: #1E9FFF; margin: 30px;"></i>
+                                <span>工资: </span><span id="salary">salary</span>&emsp;&emsp;
+                            </div>
+                        </div>
+                        <div class="layui-col-xs3">
+                            <div class="grid-demo">
+                                <i class="layui-icon layui-icon-group" style="font-size: 30px; color: #1E9FFF; margin: 30px;"></i>
+                                <span>职位: </span><span id="rname">rname</span>&emsp;&emsp;
+                            </div>
+                        </div>
+                        <div class="layui-col-xs3">
+                            <div class="grid-demo grid-demo-bg1">
+                                <i class="layui-icon layui-icon-note" style="font-size: 30px; color: #1E9FFF; margin: 30px;"></i>
+                                <span>银行账号: </span><span id="region">bankid</span>&emsp;&emsp;
+                            </div>
+                        </div>
+                        <div class="layui-col-xs3">
+                            <div class="grid-demo">
+                                <i class="layui-icon layui-icon-layer" style="font-size: 30px; color: #1E9FFF; margin: 27px;"></i>
+                                <span>身份证: </span><span id="pid">pid</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</body>
+<script type="text/javascript">
+    layui.use('element', function(){
+        var element = layui.element;
+
+    });
+</script>
+</html>
