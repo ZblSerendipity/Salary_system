@@ -35,8 +35,8 @@
     <!--侧边栏导航-->
     <div  class="layui-side layui-bg-black">
         <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo" style="margin-right: 10px;">
-            <li class="layui-nav-item layui-nav-itemed">
-                <a class="layui-this" href="javascript:;">主页</a>
+            <li class="layui-nav-item ">
+                <a  href="javascript:;">主页</a>
                 <dl class="layui-nav-child">
                     <dd><a href="javascript:;">修改信息</a></dd>
                 </dl>
@@ -49,7 +49,7 @@
                 <a href="javascript:;">公告管理</a>
             </li>
             <!--管理员工工资，员工信息-->
-            <li class="layui-nav-item"><a href="javascript:;">员工管理</a>
+            <li class="layui-nav-item layui-nav-itemed"><a class="layui-this" href="javascript:;">员工管理</a>
                 <dl class="layui-nav-child">
                     <dd><a href="javascript:;">员工工资管理</a></dd>
                 </dl>
@@ -63,6 +63,7 @@
     <!-- 内容主体区域 -->
     <div class="layui-body" style="background: #F0F0F0; margin-bottom: -45px;">
 
+		<table class="layui-hide" id="test"></table>
 
     </div>
 
@@ -73,5 +74,23 @@
         var element = layui.element;
 
     });
+    
+    layui.use('table', function(){
+  	var table = layui.table;
+    table.render({
+    elem: '#test'
+    ,url:'/demo/table/user/'
+    ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+    ,cols: [[
+      {field:'id', width:80, title: 'ID', sort: true}
+      ,{field:'username', width:80, title: '用户名'}
+      ,{field:'gender', width:80, title: '性别', sort: true}
+      ,{field:'department', width:80, title: '部门'}
+      ,{field:'position', title: '职位', width: '30%', minWidth: 100} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+      ,{field:'salary', width:137, title: '月工资', sort: true}
+    ]]
+    ,page:true
+  });
+});
 </script>
 </html>

@@ -36,9 +36,9 @@
     <div  class="layui-side layui-bg-black">
         <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo" style="margin-right: 10px;">
             <li class="layui-nav-item layui-nav-itemed">
-                <a class="layui-this" href="javascript:;">主页</a>
+                <a  href="javascript:;">主页</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="javascript:;">修改信息</a></dd>
+                    <dd><a class="layui-this" href="javascript:;">修改信息</a></dd>
                 </dl>
             </li>
             <!--工资信息表，奖惩记录，工资数据图展示过去12个月的工资图-->
@@ -62,80 +62,97 @@
 
     <!-- 内容主体区域 -->
     <div class="layui-body" style="background: #F0F0F0; margin-bottom: -45px;">
-
-        <div style="padding: 50px; padding-top: 100px;">
-
-            <div class="layui-card">
-                <div class="layui-card-header">
-                    个人信息：
-                </div>
-                <div class="layui-card-body">
-                    <img src="//t.cn/RCzsdCq" style="height: 100px; width: 100px; border-radius: 50px;"/>
-                    &emsp;<span>姓名: </span><span id="name">xingming</span>
-                </div>
-                <div class="layui-card-body">
-
-                    <div class="layui-row">
-                        <div class="layui-col-xs3">
-                            <div class="grid-demo grid-demo-bg1">
-                                <i class="layui-icon layui-icon-username" style="font-size: 30px; color: #1E9FFF; margin: 30px;"></i>
-                                <span>职工号: </span><span id="stu_num">xingming</span>&emsp;&emsp;
-                            </div>
-                        </div>
-                        <div class="layui-col-xs3">
-                            <div class="grid-demo">
-                                <i class="layui-icon layui-icon-male" style="font-size: 30px; color: #1E9FFF; margin: 30px;"></i>
-                                <span>性别: </span><span id="gender">gender</span>&emsp;&emsp;
-                            </div>
-                        </div>
-                        <div class="layui-col-xs3">
-                            <div class="grid-demo grid-demo-bg1">
-                                <i class="layui-icon layui-icon-light" style="font-size: 30px; color: #1E9FFF; margin: 30px;"></i>
-                                <span>年龄: </span><span id="age">age</span>&emsp;&emsp;
-                            </div>
-                        </div>
-                        <div class="layui-col-xs3">
-                            <div class="grid-demo">
-                                <i class="layui-icon layui-icon-template-1" style="font-size: 30px; color: #1E9FFF; margin: 30px;"></i>
-                                <span>工龄: </span><span id="seniority">seniority</span>&emsp;&emsp;
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="layui-card-body">
-
-                    <div class="layui-row">
-                        <div class="layui-col-xs3">
-                            <div class="grid-demo grid-demo-bg1">
-                                <i class="layui-icon layui-icon-form" style="font-size: 30px; color: #1E9FFF; margin: 30px;"></i>
-                                <span>工资: </span><span id="salary">salary</span>&emsp;&emsp;
-                            </div>
-                        </div>
-                        <div class="layui-col-xs3">
-                            <div class="grid-demo">
-                                <i class="layui-icon layui-icon-group" style="font-size: 30px; color: #1E9FFF; margin: 30px;"></i>
-                                <span>职位: </span><span id="rname">rname</span>&emsp;&emsp;
-                            </div>
-                        </div>
-                        <div class="layui-col-xs3">
-                            <div class="grid-demo grid-demo-bg1">
-                                <i class="layui-icon layui-icon-note" style="font-size: 30px; color: #1E9FFF; margin: 30px;"></i>
-                                <span>银行账号: </span><span id="region">bankid</span>&emsp;&emsp;
-                            </div>
-                        </div>
-                        <div class="layui-col-xs3">
-                            <div class="grid-demo">
-                                <i class="layui-icon layui-icon-layer" style="font-size: 30px; color: #1E9FFF; margin: 27px;"></i>
-                                <span>身份证: </span><span id="pid">pid</span>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
+	    <div style="padding: 30px;">
+	    	
+	    	<div class="layui-card">
+	    		<div class="layui-card-body">
+	    			<div class="layui-upload">
+					  <div class="layui-upload-list">
+					    <img src="//t.cn/RCzsdCq" class="layui-upload-img" id="image-img" style="height: 100px; width: 100px; border-radius: 50px;">
+					    <p id="demoText"></p>
+					    <button type="button" class="layui-btn" id="image-btn">修改头像</button>
+					  </div>
+					</div> 
+	    		</div>
+	    	<div class="layui-card-body" style="padding-top: 40px;">
+	    	<form class="layui-form" action="" method="post">
+			  <div class="layui-form-item">
+			    <div class="layui-inline">
+			    	
+			      <label class="layui-form-label" style="width: 170px;"><i class="layui-icon layui-icon-username" style="font-size: 30px; color: #1E9FFF; margin: 20px;"></i>职工号：</label>
+			      <div class="layui-input-inline">
+			        <input type="text" name="stu_num" class="layui-input" disabled="disabled" id="stu_num">
+			      </div>
+			    </div>
+			    <div class="layui-inline">
+			      <label class="layui-form-label"  style="width: 170px;"><i class="layui-icon layui-icon-username" style="font-size: 30px; color: #1E9FFF; margin: 20px;"></i>姓名：</label>
+			      <div class="layui-input-inline">
+			        <input type="text" name="name" id="name" class="layui-input">
+			      </div>
+			    </div>
+			    <div class="layui-inline">
+			      <label class="layui-form-label"  style="width: 170px;"><i class="layui-icon layui-icon-group" style="font-size: 30px; color: #1E9FFF; margin: 20px;"></i>职位：</label>
+			      <div class="layui-input-inline">
+			        <input type="text" name="rname" id="rname" disabled="disabled" class="layui-input">
+			      </div>
+			    </div>
+			  </div>
+			  
+			  <div class="layui-form-item">
+			    <div class="layui-inline">
+			      <label class="layui-form-label"  style="width: 170px;"><i class="layui-icon layui-icon-male" style="font-size: 30px; color: #1E9FFF; margin: 20px;"></i>性别：</label>
+			      <div class="layui-input-inline">
+			        <input type="text" name="gender" id="gender" disabled="disabled" class="layui-input">
+			      </div>
+			    </div>
+			    <div class="layui-inline">
+			      <label class="layui-form-label"  style="width: 170px;"><i class="layui-icon layui-icon-light" style="font-size: 30px; color: #1E9FFF; margin: 20px;"></i>年龄：</label>
+			      <div class="layui-input-inline">
+			        <input type="text" name="age" id="age" lay-verify="age" class="layui-input">
+			      </div>
+			    </div>
+			    <div class="layui-inline">
+			      <label class="layui-form-label"  style="width: 170px;"><i class="layui-icon layui-icon-note" style="font-size: 30px; color: #1E9FFF; margin: 20px;"></i>银行账号：</label>
+			      <div class="layui-input-inline">
+			        <input type="text" name="region" id="region" disabled="disabled" class="layui-input">
+			      </div>
+			    </div>
+			  </div>
+			  
+			  <div class="layui-form-item">
+			    <div class="layui-inline">
+			      <label class="layui-form-label"  style="width: 170px;"><i class="layui-icon layui-icon-template-1" style="font-size: 30px; color: #1E9FFF; margin: 20px;"></i>工龄：</label>
+			      <div class="layui-input-inline">
+			        <input type="text" name="seniority" id="seniority" lay-verify="seniority" class="layui-input">
+			      </div>
+			    </div>
+			    <div class="layui-inline">
+			      <label class="layui-form-label"  style="width: 170px;"><i class="layui-icon layui-icon-form" style="font-size: 30px; color: #1E9FFF; margin: 20px;"></i>工资：</label>
+			      <div class="layui-input-inline">
+			        <input type="text" name="salary" id="salary" disabled="disabled" class="layui-input">
+			      </div>
+			    </div>
+			    <div class="layui-inline">
+			      <label class="layui-form-label"  style="width: 170px;"><i class="layui-icon layui-icon-layer" style="font-size: 30px; color: #1E9FFF; margin: 27px;"></i>身份证：</label>
+			      <div class="layui-input-inline">
+			        <input type="text" name="pid" id="pid" lay-verify="identity" autocomplete="off" class="layui-input">
+			      </div>
+			    </div>
+			  </div>
+			  
+			  <div class="layui-form-item">
+			    <div class="layui-inline">
+			      <div class="layui-input-inline">
+			      	<label class="layui-form-label"  style="width: 100px;">
+			      		<input type="submit" class="layui-btn" lay-submit="" lay-filter="L_submit" value="提交修改" style="margin-left: 85px;"/>
+			      	</label>
+			      </div>
+			    </div>
+			  </div>
+			</form>
+	    	</div>
+	    	</div>
+	    </div>
     </div>
 
 
