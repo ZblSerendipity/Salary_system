@@ -5,7 +5,8 @@
     <title>工资管理主页</title>
     <link rel="stylesheet" href="css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="../layui/css/layui.css"/>
-    <script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+    <script type="text/javascript" rel="stylesheet" src="../js/jquery-1.12.4.js"></script>
+	<script type="text/javascript" rel="stylesheet" src="../js/ajaxUtil.js"></script>
     <script type="text/javascript" src="../layui/layui.js"></script>
     
 </head>
@@ -18,7 +19,7 @@
 	    <div class="layui-logo ">企业工资管理系统</div>
 	    <ul class="layui-nav layui-layout-right">
 			  <li class="layui-nav-item" lay-unselect="">
-			    <a href="javascript:;"><img src="//t.cn/RCzsdCq" class="layui-nav-img">我</a>
+			    <a  href="javascript:;"><img src="//t.cn/RCzsdCq" class="layui-nav-img"><span id="name">xingming</span></a>
 			    <dl class="layui-nav-child">
 			      <dd><a href="">公告信息</a></dd>
 			      
@@ -79,7 +80,7 @@
 				    <div class="layui-col-xs3">
 				      <div class="grid-demo grid-demo-bg1">
 				      	<i class="layui-icon layui-icon-username" style="font-size: 30px; color: #1E9FFF; margin: 30px;"></i>
-			  			<span>职工号: </span><span id="stu_num">xingming</span>&emsp;&emsp;
+			  			<span>职工号: </span><span id="unum">xingming</span>&emsp;&emsp;
 				      </div>
 				    </div>
 				    <div class="layui-col-xs3">
@@ -115,13 +116,13 @@
 				    <div class="layui-col-xs3">
 				      <div class="grid-demo">
 				      	<i class="layui-icon layui-icon-group" style="font-size: 30px; color: #1E9FFF; margin: 30px;"></i>
-			  			<span>职位: </span><span id="rname">rname</span>&emsp;&emsp;
+			  			<span>职位: </span><span id="position">position</span>&emsp;&emsp;
 				      </div>
 				    </div>
 				    <div class="layui-col-xs3">
 				      <div class="grid-demo grid-demo-bg1">
 				      	<i class="layui-icon layui-icon-note" style="font-size: 30px; color: #1E9FFF; margin: 30px;"></i>
-			  			<span>银行账号: </span><span id="region">bankid</span>&emsp;&emsp;
+			  			<span>银行账号: </span><span id="bankid">bankid</span>&emsp;&emsp;
 				      </div>
 				    </div>
 				    <div class="layui-col-xs3">
@@ -145,5 +146,33 @@
 	  var element = layui.element;
 	  
 	});
+</script>
+
+
+<script type="text/javascript">
+
+	window.onload = function() {
+		ajax({
+			method:HTTP_METHOD.POST,
+			url:"/Info/getInfo",
+			async:true,
+			type:HTTP_RESPONSE_TYPE.JSON,
+			callback:(data)=>{
+
+				var json = eval(data);
+				// alert(json.uname);
+				$("#name").text(json.uname);
+				$("#unum").text(json.unum);
+				$("#gender").text(json.gender);
+				$("#age").text(json.age);
+				$("#seniority").text(json.seniority);
+				$("#salary").text(json.salary);
+				$("#bankid").text(json.bankid) ;
+				$("#position").text(json.position) ;
+				$("#pid").text(json.pid.substring(0, 6)+"********"+json.pid.substring(14, 18))
+			}
+		})
+	}
+
 </script>
 </html>
