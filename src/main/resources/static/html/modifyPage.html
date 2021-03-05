@@ -19,7 +19,7 @@
         <div class="layui-logo ">企业工资管理系统</div>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item" lay-unselect="">
-                <a href="javascript:;"><img src="//t.cn/RCzsdCq" class="layui-nav-img">我</a>
+                <a href="javascript:;"><img src="//t.cn/RCzsdCq" class="layui-nav-img"><span id="name">xingming</span></a>
                 <dl class="layui-nav-child">
                     <dd><a href="">公告信息</a></dd>
 
@@ -37,27 +37,31 @@
     <div  class="layui-side layui-bg-black">
         <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo" style="margin-right: 10px;">
             <li class="layui-nav-item layui-nav-itemed">
-                <a  href="javascript:;">主页</a>
-                <dl class="layui-nav-child">
-                    <dd><a class="layui-this" href="javascript:;">修改信息</a></dd>
-                </dl>
+				<a  href="http://localhost:8080/html/mainpage.html">主页</a>
+				<dl class="layui-nav-child">
+					<dd><a class="layui-this" href="http://localhost:8080/html/modifyPage.html">修改信息</a></dd>
+				</dl>
             </li>
             <!--工资信息表，奖惩记录，工资数据图展示过去12个月的工资图-->
             <li class="layui-nav-item">
-                <a href="javascript:;">我的工资信息</a>
+				<a href="http://localhost:8080/html/salaryPage.html">我的工资信息</a>
             </li>
             <li class="layui-nav-item">
-                <a href="javascript:;">公告管理</a>
+				<a  href="http://localhost:8080/html/boardManage.html">公告管理</a>
+				<dl class="layui-nav-child">
+					<dd><a href="http://localhost:8080/html/boardPage.html">公告发布</a></dd>
+				</dl>
             </li>
             <!--管理员工工资，员工信息-->
-            <li class="layui-nav-item"><a href="javascript:;">员工管理</a>
-                <dl class="layui-nav-child">
-                    <dd><a href="javascript:;">员工工资管理</a></dd>
-                </dl>
+            <li class="layui-nav-item">
+				<a href="http://localhost:8080/html/stuffManagePage.html">员工管理</a>
+				<dl class="layui-nav-child">
+					<dd><a href="http://localhost:8080/html/salaryManagePage.html">员工工资管理</a></dd>
+				</dl>
             </li>
 
             <!--角色权限管理-->
-            <li class="layui-nav-item"><a href="javascript:;">角色管理</a></li>
+            <li class="layui-nav-item"><a href="http://localhost:8080/html/powerPage.html">角色管理</a></li>
         </ul>
     </div>
 
@@ -80,21 +84,21 @@
 			  <div class="layui-form-item">
 			    <div class="layui-inline">
 			    	
-			      <label class="layui-form-label" style="width: 170px;"><i class="layui-icon layui-icon-username" style="font-size: 30px; color: #1E9FFF; margin: 20px;"></i>职工号：</label>
+			      <label class="layui-form-label" style="width: 170px;"><i class="layui-icon layui-icon-tabs" style="font-size: 30px; color: #1E9FFF; margin: 20px;"></i>职工号：</label>
 			      <div class="layui-input-inline">
-			        <input type="text" name="stu_num" class="layui-input" disabled="disabled" id="stu_num">
+			        <input type="text" name="stu_num" class="layui-input" disabled="disabled" id="unum">
 			      </div>
 			    </div>
 			    <div class="layui-inline">
 			      <label class="layui-form-label"  style="width: 170px;"><i class="layui-icon layui-icon-username" style="font-size: 30px; color: #1E9FFF; margin: 20px;"></i>姓名：</label>
 			      <div class="layui-input-inline">
-			        <input type="text" name="name" id="name" class="layui-input">
+			        <input type="text" name="name" id="xm" class="layui-input">
 			      </div>
 			    </div>
 			    <div class="layui-inline">
 			      <label class="layui-form-label"  style="width: 170px;"><i class="layui-icon layui-icon-group" style="font-size: 30px; color: #1E9FFF; margin: 20px;"></i>职位：</label>
 			      <div class="layui-input-inline">
-			        <input type="text" name="rname" id="rname" disabled="disabled" class="layui-input">
+			        <input type="text" name="position" id="position" disabled="disabled" class="layui-input">
 			      </div>
 			    </div>
 			  </div>
@@ -115,7 +119,7 @@
 			    <div class="layui-inline">
 			      <label class="layui-form-label"  style="width: 170px;"><i class="layui-icon layui-icon-note" style="font-size: 30px; color: #1E9FFF; margin: 20px;"></i>银行账号：</label>
 			      <div class="layui-input-inline">
-			        <input type="text" name="region" id="region" disabled="disabled" class="layui-input">
+			        <input type="text" name="bankid" id="bankid" disabled="disabled" class="layui-input">
 			      </div>
 			    </div>
 			  </div>
@@ -163,5 +167,92 @@
         var element = layui.element;
 
     });
+
+	layui.use(['form','util'], function() {
+		var form = layui.form;
+		var util = layui.util;
+		var reg = /^\d+$|^\d+[.]?\d+$/;
+		form.verify({
+			age: function(value) {
+				if(!value.match(reg)) {
+					return '请输入规范数值！';
+				}
+				if (Number(value) < 18 || Number(value) > 65) {
+					return '年龄未在18岁到65岁之间，不符合规定！';
+				}
+			}
+			// ,pass: [
+			// 	/^[\S]{6,12}$/
+			// 	,'密码必须6到12位，且不能出现空格'
+			// ]
+			,seniority: function(value) {
+				if(!value.match(reg)) {
+					return '请输入规范数值！';
+				}
+				if (Number(value) < 0 || Number(value) > 47) {
+					return '工龄不符合规范！';
+				}
+			}
+		});
+
+		form.on('submit(L_submit)', function(data) {
+			var age=util.escape($("#age").val());
+			var uname=util.escape($("#xm").val());
+			var pid=util.escape($("#pid").val());
+
+
+			$.ajax({
+				type:'POST',
+				url:'/Info/updateInfo',
+				data:{age:age, uname:uname, pid:pid},
+				success:function(data){
+					layer.alert("修改成功！");
+				},
+				error:function() {
+					layer.alert("修改失败！");
+				}
+			});
+
+			// $.post(
+			// 		'/Info/updateInfo',
+			// 		{age:age, uname:uname, pid:pid},
+			// 		function(data){
+			// 			alert(data);
+			// 			if (data == 1){
+			// 				layer.alert("修改成功！");
+			// 			}else {
+			// 				layer.alert("修改失败！");
+			// 			}
+			// 		}
+			// )
+			return false;
+		});
+	})
+</script>
+
+<script>
+	window.onload = function() {
+		ajax({
+			method:HTTP_METHOD.POST,
+			url:"/Info/getInfo",
+			async:true,
+			type:HTTP_RESPONSE_TYPE.JSON,
+			callback:(data)=>{
+
+				var json = eval(data);
+				// alert(json.uname);
+				$("#name").text(json.uname);
+				$("#xm").val(json.uname);
+				$("#unum").val(json.unum);
+				$("#gender").val(json.gender);
+				$("#age").val(json.age);
+				$("#seniority").val(json.seniority);
+				$("#salary").val(json.salary);
+				$("#bankid").val(json.bankid) ;
+				$("#position").val(json.position) ;
+				$("#pid").val(json.pid)
+			}
+		})
+	}
 </script>
 </html>

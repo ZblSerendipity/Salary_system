@@ -37,27 +37,31 @@
     <div  class="layui-side layui-bg-black">
         <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo" style="margin-right: 10px;">
             <li class="layui-nav-item layui-nav-itemed">
-                <a  href="javascript:;">主页</a>
-                <dl class="layui-nav-child">
-                    <dd><a href="javascript:;">修改信息</a></dd>
-                </dl>
+				<a  href="http://localhost:8080/html/mainpage.html">主页</a>
+				<dl class="layui-nav-child">
+					<dd><a href="http://localhost:8080/html/modifyPage.html">修改信息</a></dd>
+				</dl>
             </li>
             <!--工资信息表，奖惩记录，工资数据图展示过去12个月的工资图-->
             <li class="layui-nav-item">
-                <a href="javascript:;">我的工资信息</a>
+				<a href="http://localhost:8080/html/salaryPage.html">我的工资信息</a>
             </li>
             <li class="layui-nav-item">
-                <a href="javascript:;">公告管理</a>
+				<a  href="http://localhost:8080/html/boardManage.html">公告管理</a>
+				<dl class="layui-nav-child">
+					<dd><a href="http://localhost:8080/html/boardPage.html">公告发布</a></dd>
+				</dl>
             </li>
             <!--管理员工工资，员工信息-->
-            <li class="layui-nav-item"><a href="javascript:;">员工管理</a>
-                <dl class="layui-nav-child">
-                    <dd><a href="javascript:;">员工工资管理</a></dd>
-                </dl>
+            <li class="layui-nav-item">
+				<a href="http://localhost:8080/html/stuffManagePage.html">员工管理</a>
+				<dl class="layui-nav-child">
+					<dd><a href="http://localhost:8080/html/salaryManagePage.html">员工工资管理</a></dd>
+				</dl>
             </li>
 
             <!--角色权限管理-->
-            <li class="layui-nav-item"><a class="layui-this" href="javascript:;">角色管理</a></li>
+            <li class="layui-nav-item"><a class="layui-this" href="http://localhost:8080/html/powerPage.html">角色管理</a></li>
         </ul>
     </div>
 

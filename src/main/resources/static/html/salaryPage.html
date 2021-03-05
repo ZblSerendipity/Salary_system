@@ -38,34 +38,44 @@
     <div  class="layui-side layui-bg-black">
         <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo" style="margin-right: 10px;">
             <li class="layui-nav-item ">
-                <a href="javascript:;">主页</a>
+                <a href="http://localhost:8080/html/mainpage.html">主页</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="javascript:;">修改信息</a></dd>
+                    <dd><a href="http://localhost:8080/html/modifyPage.html">修改信息</a></dd>
                 </dl>
             </li>
             <!--工资信息表，奖惩记录，工资数据图展示过去12个月的工资图-->
             <li class="layui-nav-item">
-                <a  class="layui-this" href="javascript:;">我的工资信息</a>
+                <a  class="layui-this" href="http://localhost:8080/html/salaryPage.html">我的工资信息</a>
             </li>
             <li class="layui-nav-item">
-                <a href="javascript:;">公告管理</a>
+                <a  href="http://localhost:8080/html/boardManage.html">公告管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="http://localhost:8080/html/boardPage.html">公告发布</a></dd>
+                </dl>
             </li>
             <!--管理员工工资，员工信息-->
-            <li class="layui-nav-item"><a href="javascript:;">员工管理</a>
+            <li class="layui-nav-item">
+                <a href="http://localhost:8080/html/stuffManagePage.html">员工管理</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="javascript:;">员工工资管理</a></dd>
+                    <dd><a href="http://localhost:8080/html/salaryManagePage.html">员工工资管理</a></dd>
                 </dl>
             </li>
 
             <!--角色权限管理-->
-            <li class="layui-nav-item"><a href="javascript:;">角色管理</a></li>
+            <li class="layui-nav-item"><a href="http://localhost:8080/html/powerPage.html">角色管理</a></li>
         </ul>
     </div>
 
     <!-- 内容主体区域 -->
     <div class="layui-body" style="background: #F0F0F0; margin-bottom: -45px;">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend>工资总表</legend>
+        </fieldset>
 		<table class="layui-hide" id="salary" lay-filter="test"></table>
 		<!--<table class="layui-hide" id="salary" lay-filter="test"></table>-->
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend>过往月工资示意图</legend>
+        </fieldset>
 		<div id="salaryChart" style="width: 600px; height: 500px;">
 			
 		</div>
@@ -87,29 +97,7 @@
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <!--chart-->
-<script type="text/javascript">
-	
-	 var myChart = echarts.init(document.getElementById('salaryChart'));
-	 var option =  {
-    xAxis: {
-        type: 'category',
-        data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月','8月','9月','10月','11月','12月']
-    },
-    yAxis: {
-    	name:'元/月',
-        type: 'value',
-        max:10000
-    },
-    series: [{
-        data: [3400, 3600, 3500, 4000, 3700, 3250, 3500,3620,3740,3400,3610,3600],
-        type: 'line',
-        smooth: true
-    }]
-};
 
-option && myChart.setOption(option);
-
-</script>
 <script type="text/javascript">
     layui.use('element', function(){
         var element = layui.element;
@@ -121,7 +109,7 @@ option && myChart.setOption(option);
   //员工工资表表格渲染
   table.render({
     elem: '#salary'
-    ,url:'/test/table/demo1.json'
+    ,url:'/Info/getUMWage'
     ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
     ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
       title: '提示'
@@ -129,11 +117,13 @@ option && myChart.setOption(option);
       ,icon: 'layui-icon-tips'
     }]
     ,title: '用户数据表'
+      ,page:true
+      ,limit: 10
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}
-      ,{field:'id', title:'员工号', width:150, fixed: 'left', unresize: true, sort: true}
-      ,{field:'username', title:'员工名', width:100, edit: 'text'}
-      ,{field:'salary', title:'基本工资', width:120, edit: 'text',sort: true }
+      ,{field:'unum', title:'员工号', width:150, fixed: 'left', unresize: true, sort: true}
+      ,{field:'uname', title:'员工名', width:100, edit: 'text'}
+      ,{field:'basic', title:'基本工资', width:120, edit: 'text',sort: true }
       ,{field:'performance', title:'绩效', width:100, edit: 'text', sort: true}
       ,{field:'communication', title:'通讯补助', width:110,sort: true}
       ,{field:'traffic',width:110, title:'交通补助',sort: true}
@@ -225,5 +215,52 @@ option && myChart.setOption(option);
     }
   });
 });
+
+
+
+
+    var myChart = echarts.init(document.getElementById('salaryChart'));
+    // myChart.showLoading();
+
+    $.post(
+        '/Info/chart',
+        function (datas) {
+            var json = eval(datas);
+            var months = new Array(0);
+            var values = new Array(0);
+            months.push(json[0].month.substring(5,7));
+            values.push(json[0].all);
+            var maxwage = json[0].all;
+            for (var i=1; i < json.length; i++){
+                months.push(json[i].month.substring(5,7));
+                values.push(json[i].all);
+                if (maxwage<json[i].all){
+                    maxwage= json[i].all;
+                }
+            }
+
+            var option =  {
+                xAxis: {
+                    type: 'category',
+                    data: months
+                },
+                yAxis: {
+                    name:'元/月',
+                    type: 'value',
+                    max:maxwage+1500
+                },
+                series: [{
+                    data: values,
+                    type: 'line',
+                    smooth: true
+                }]
+            }
+            option && myChart.setOption(option);
+
+    }
+    );
+
+
+
 </script>
 </html>
