@@ -19,7 +19,7 @@
         <div class="layui-logo ">企业工资管理系统</div>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item" lay-unselect="">
-                <a href="javascript:;"><img src="//t.cn/RCzsdCq" class="layui-nav-img">我</a>
+                <a href="javascript:;"><img src="//t.cn/RCzsdCq" class="layui-nav-img"><span id="xm">xingming</span></a>
                 <dl class="layui-nav-child">
                     <dd><a href="">公告信息</a></dd>
 
@@ -111,6 +111,23 @@
 
 </body>
 <script type="text/javascript">
+
+    window.onload = function() {
+        ajax({
+            method:HTTP_METHOD.POST,
+            url:"/Info/getInfo",
+            async:true,
+            type:HTTP_RESPONSE_TYPE.JSON,
+            callback:(data)=>{
+
+                var json = eval(data);
+                $("#xm").text(json.uname);
+
+            }
+        })
+    }
+
+
     layui.use('element', function(){
         var element = layui.element;
 

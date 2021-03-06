@@ -19,7 +19,7 @@
         <div class="layui-logo ">企业工资管理系统</div>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item" lay-unselect="">
-                <a href="javascript:;"><img src="//t.cn/RCzsdCq" class="layui-nav-img">我</a>
+                <a href="javascript:;"><img src="//t.cn/RCzsdCq" class="layui-nav-img"><span id="xm">xingming</span></a>
                 <dl class="layui-nav-child">
                     <dd><a href="">公告信息</a></dd>
 
@@ -77,17 +77,17 @@
 			  	
 			  	<!--所有公告-->
 			    <div class="layui-tab-item layui-show" style="padding: -40px;">
-					<table class="layui-table" lay-data="{ url:'/demo/table/user/', page:true, id:'idTest'}" lay-filter="demo">
-		  <thead>
-		    <tr>
-		      <th lay-data="{type:'checkbox', fixed: 'left'}"></th>
-		      <th lay-data="{field:'id', width:150, sort: true, fixed: true}">ID</th>
-		      <th lay-data="{field:'username', width:100}">发布者</th>
-		      <th lay-data="{field:'time', width:120, sort: true}">发布时间</th>
-		      <th lay-data="{field:'content', width:300}">内容</th>
-		      <th lay-data="{fixed: 'right', width:178,  toolbar: '#barDemo'}"></th>
-		    </tr>
-		  </thead>
+					<table class="layui-hide" id = "idTest" lay-filter="test">
+<!--		  <thead>-->
+<!--		    <tr>-->
+<!--&lt;!&ndash;		      <th lay-data="{type:'checkbox', fixed: 'left'}"></th>&ndash;&gt;-->
+<!--		      <th lay-data="{field:'unum', width:150, sort: true, fixed: true}">ID</th>-->
+<!--		      <th lay-data="{field:'uname',fixed: true, width:100}">发布者</th>-->
+<!--		      <th lay-data="{field:'time', fixed: true, width:200, sort: true}">发布时间</th>-->
+<!--		      <th lay-data="{field:'content', width:600}">内容</th>-->
+<!--		      <th lay-data="{fixed: 'right', width:200,  toolbar: '#barDemo'}">操作</th>-->
+<!--		    </tr>-->
+<!--		  </thead>-->
 		</table>
 		
 				<script type="text/html" id="barDemo">
@@ -134,28 +134,83 @@
 
 </body>
 <script type="text/javascript">
+
+	window.onload = function() {
+		ajax({
+			method:HTTP_METHOD.POST,
+			url:"/Info/getInfo",
+			async:true,
+			type:HTTP_RESPONSE_TYPE.JSON,
+			callback:(data)=>{
+
+				var json = eval(data);
+				$("#xm").text(json.uname);
+
+			}
+		})
+	}
+
+
     layui.use('element', function(){
         var element = layui.element;
 
     });
     layui.use('table', function(){
+
   var table = layui.table;
+
+		table.render({
+			elem: '#idTest'
+			,url:'/BoardInfo/getAll'
+			,page: true
+			,limit:10
+			,cols: [[
+				{field:'unum', width:150, sort: true, fixed: true,title:'ID'}
+				,{field:'uname',fixed: true, width:100,title:'发布者'}
+				,{field:'time', fixed: true, width:200, sort: true,title:'时间'}
+				,{field:'content', width:600,title:'内容'}
+				,{fixed: 'right', width:200,  toolbar: '#barDemo',title:'操作'}
+
+			]]
+
+		});
+
   //监听表格复选框选择
-  table.on('checkbox(demo)', function(obj){
-    console.log(obj)
-  });
+  // table.on('checkbox(demo)', function(obj){
+  //   console.log(obj)
+  // });
   //监听工具条
   table.on('tool(demo)', function(obj){
     var data = obj.data;
+    var json = eval(data);
     if(obj.event === 'detail'){
       layer.msg('ID：'+ data.id + ' 的查看操作');
     } else if(obj.event === 'del'){
-      layer.confirm('真的删除行么', function(index){
-        obj.del();
-        layer.close(index);
+
+      layer.confirm('您确定要删除这条公告吗?',{btn: ['确定', '取消'],title:"提示"}, function(index){
+      	var bnum = json.bnum;
+
+      	$.post(
+      			"/BoardInfo/DelRow",
+				{bnum : bnum},
+				function (datas) {
+      				if (datas == "1"){
+						obj.del();
+
+
+					}else {
+      					layer.alert("删除失败！");
+
+					}
+
+				}
+		)
+		  layer.close(index);
+
+
       });
     } else if(obj.event === 'edit'){
-      layer.alert('编辑行：<br>'+ JSON.stringify(data))
+      layer.alert('编辑行：<br>'+ JSON.stringify(data).time)
     }
   });
   

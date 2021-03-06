@@ -65,7 +65,6 @@ public class InitInfo {
     @RequestMapping(value = "/chart")void getWage(HttpSession session,HttpServletResponse response)throws Exception{
         //        String unum = session.getAttribute("unum").toString();
         response.setContentType("text/json;charset=utf-8");
-        System.out.println(maService.getYWage("2017110457").toString());
         response.getWriter().write(JSON.toJSONString(maService.getYWage("2017110457")));
     }
 }

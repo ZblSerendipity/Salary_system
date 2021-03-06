@@ -42,6 +42,7 @@ public interface MaMapper {
             "order by month desc " +
             "limit 0,12")
     List<Salary> getYWage(@Param("unum")String unum);
+
 }
 
 
