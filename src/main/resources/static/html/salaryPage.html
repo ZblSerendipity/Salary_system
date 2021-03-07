@@ -81,7 +81,7 @@
 		</div>
 
     </div>
-
+</div>
 
 </body>
 <script type="text/html" id="toolbarDemo">
@@ -148,7 +148,7 @@
       ,{field:'overtime', title:'加班工资', width:110 ,sort: true}
       ,{field:'bonus', title:'奖金', width:100, sort: true}
       ,{field:'all', title:'总和', width:120,sort: true}
-      ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+      ,{field:'month', fixed: 'right', title:'日期', width:150,sort: true}
     ]]
 
   });
@@ -188,7 +188,7 @@
 //});
   
   //头工具栏事件
-  table.on('toolbar(stuff)', function(obj){
+  table.on('toolbar(test)', function(obj){
     var checkStatus = table.checkStatus(obj.config.id);
     switch(obj.event){
       case 'getCheckData':
@@ -211,7 +211,7 @@
   });
   
   //监听行工具事件
-  table.on('tool(stuff)', function(obj){
+  table.on('tool(test)', function(obj){
     var data = obj.data;
     //console.log(obj)
     if(obj.event === 'del'){

@@ -6,15 +6,16 @@ public class Board {
     private String unum;
     private String bnum;
     private String uname;
+    private String title;
     private Date time;
     private String content;
 
-    public String getBnum() {
-        return bnum;
+    public String getTitle() {
+        return title;
     }
 
-    public void setBnum(String bnum) {
-        this.bnum = bnum;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
@@ -23,9 +24,18 @@ public class Board {
                 "unum='" + unum + '\'' +
                 ", bnum='" + bnum + '\'' +
                 ", uname='" + uname + '\'' +
+                ", title='" + title + '\'' +
                 ", time=" + time +
                 ", content='" + content + '\'' +
                 '}';
+    }
+
+    public String getBnum() {
+        return bnum;
+    }
+
+    public void setBnum(String bnum) {
+        this.bnum = bnum;
     }
 
     public String getUnum() {
@@ -60,10 +70,11 @@ public class Board {
         this.content = content;
     }
 
-    public Board(String unum, String bnum, String uname, Date time, String content) {
+    public Board(String unum, String bnum, String uname, String title, Date time, String content) {
         this.unum = unum;
         this.bnum = bnum;
         this.uname = uname;
+        this.title = title;
         this.time = time;
         this.content = content;
     }

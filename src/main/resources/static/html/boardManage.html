@@ -106,22 +106,23 @@
 			  	 <div class="layui-form-item">
 				    <label class="layui-form-label">标题：</label>
 				    <div class="layui-input-block">
-				      <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+				      <input type="text" name="title" id="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
 				    </div>
 				  </div>
 				  
 				  <div class="layui-form-item layui-form-text">
 				    <label class="layui-form-label">内容：</label>
 				    <div class="layui-input-block">
-				      <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
+				      <textarea placeholder="请输入内容" id="content" class="layui-textarea"></textarea>
 				    </div>
 				  </div>
 				  
 				   <div class="layui-form-item">
 				    <div class="layui-input-block">
 				
-				      <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即发布</button>
+				      <button type="submit" class="layui-btn" id="upload" lay-submit="" lay-filter="demo1">立即发布</button>
 				    </div>
+				   </div>
   
 			  </form>
 			    	
@@ -130,7 +131,7 @@
 			</div>
 		</div>
     </div>
-
+</div>
 
 </body>
 <script type="text/javascript">
@@ -151,9 +152,14 @@
 	}
 
 
+
+
+
     layui.use('element', function(){
         var element = layui.element;
 
+
+		// window.location.href = "http://localhost:8080/html/boardManage.html";
     });
     layui.use('table', function(){
 
@@ -167,7 +173,8 @@
 			,cols: [[
 				{field:'unum', width:150, sort: true, fixed: true,title:'ID'}
 				,{field:'uname',fixed: true, width:100,title:'发布者'}
-				,{field:'time', fixed: true, width:200, sort: true,title:'时间'}
+				,{field:'time', fixed: true, width:150, sort: true,title:'时间'}
+				,{field:'title', fixed: true, width:150, sort: true,title:'标题'}
 				,{field:'content', width:600,title:'内容'}
 				,{fixed: 'right', width:200,  toolbar: '#barDemo',title:'操作'}
 
@@ -180,12 +187,12 @@
   //   console.log(obj)
   // });
   //监听工具条
-  table.on('tool(demo)', function(obj){
+  table.on('tool(test)', function(obj){
     var data = obj.data;
     var json = eval(data);
-    if(obj.event === 'detail'){
-      layer.msg('ID：'+ data.id + ' 的查看操作');
-    } else if(obj.event === 'del'){
+	  if(obj.event === 'detail'){
+		  layer.msg('公告内容：'+ json.content);
+	  } else if(obj.event === 'del'){
 
       layer.confirm('您确定要删除这条公告吗?',{btn: ['确定', '取消'],title:"提示"}, function(index){
       	var bnum = json.bnum;
@@ -221,5 +228,31 @@
     active[type] ? active[type].call(this) : '';
   });
 });
+
+	$("#upload").click(
+			function submitBoard() {
+				var title = $("#title").val();
+				var content = $("#content").val();
+
+				$.post(
+						"/BoardInfo/newBoard",
+						{title:title,content:content},
+						function (data) {
+
+							alert(data);
+							if (data == "1"){
+
+
+								alert("发布成功!");
+
+
+							}else{
+								alert("发布失败!请尝试重新发布。");
+							}
+						}
+				)
+
+			}
+	)
 </script>
 </html>
