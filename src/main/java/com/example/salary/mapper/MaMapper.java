@@ -17,8 +17,9 @@ public interface MaMapper {
     User getUser(String unum);
 
 //查询用户信息
-@Select("select * from stuff " +
-        "where unum = #{unum}")
+@Select("select * from stuff,stuffwage " +
+        "where stuff.unum = stuffwage.unum and stuff.unum = #{unum} " +
+        "order by month desc limit 0,1")
     Stuff getStuffInfo(String unum);
 
     //修改用户信息

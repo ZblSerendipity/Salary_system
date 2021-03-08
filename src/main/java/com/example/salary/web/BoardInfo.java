@@ -61,6 +61,7 @@ public class BoardInfo {
         String bnum =String.valueOf(r1)+String.valueOf(r2)+String.valueOf(now);// 公告ID
 
         Integer flag = boardService.inNewBoard("2017110457",bnum,time,title,content);
+        System.out.println(flag);
         response.setContentType("text/json;charset=utf-8");
         response.getWriter().write(flag == 0 ? "0": "1");
 

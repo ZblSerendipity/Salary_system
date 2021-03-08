@@ -7,9 +7,26 @@ public class Stuff {
     private String bankid;//银行账号
     private String pid;//身份证号
     private String gender;//性别
-    private double salary;//工资
+    private String dname;//部门
+    private double basic;//工资
     private int age;//年龄
     private int seniority;//工龄
+
+    public String getDname() {
+        return dname;
+    }
+
+    public void setDname(String dname) {
+        this.dname = dname;
+    }
+
+    public double getBasic() {
+        return basic;
+    }
+
+    public void setBasic(double basic) {
+        this.basic = basic;
+    }
 
     @Override
     public String toString() {
@@ -20,7 +37,8 @@ public class Stuff {
                 ", bankid='" + bankid + '\'' +
                 ", pid='" + pid + '\'' +
                 ", gender='" + gender + '\'' +
-                ", salary=" + salary +
+                ", dname='" + dname + '\'' +
+                ", basic=" + basic +
                 ", age=" + age +
                 ", seniority=" + seniority +
                 '}';
@@ -74,13 +92,6 @@ public class Stuff {
         this.gender = gender;
     }
 
-    public double getSalary() {
-        return salary;
-    }
-
-    public void setSalary(double salary) {
-        this.salary = salary;
-    }
 
     public int getAge() {
         return age;
@@ -98,14 +109,15 @@ public class Stuff {
         this.seniority = seniority;
     }
 
-    public Stuff(String unum, String uname, String position, String bankid, String pid, String gender, double salary, int age, int seniority) {
+    public Stuff(String unum, String uname, String position, String bankid, String pid, String gender, String dname, double basic, int age, int seniority) {
         this.unum = unum;
         this.uname = uname;
         this.position = position;
         this.bankid = bankid;
         this.pid = pid;
         this.gender = gender;
-        this.salary = salary;
+        this.dname = dname;
+        this.basic = basic;
         this.age = age;
         this.seniority = seniority;
     }

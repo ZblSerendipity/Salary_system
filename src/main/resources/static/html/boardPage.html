@@ -49,7 +49,7 @@
             <li class="layui-nav-item layui-nav-itemed">
                 <a  href="http://localhost:8080/html/boardManage.html">公告管理</a>
                 <dl class="layui-nav-child">
-                    <dd><a class="layui-this"  href="http://localhost:8080/html/boardPage.html">公告发布</a></dd>
+                    <dd><a class="layui-this"  href="http://localhost:8080/html/boardPage.html">我的公告</a></dd>
                 </dl>
             </li>
             <!--管理员工工资，员工信息-->
@@ -68,12 +68,12 @@
     <!-- 内容主体区域 -->
     <div class="layui-body" style="background: #F0F0F0; margin-bottom: -45px;">
 	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
- 			 <legend>我的公告</legend>
+ 			 <legend ><span style="font-size: 30px">我的公告</span></legend>
 		</fieldset>
         <hr class="layui-bg-green">
 
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
-            <legend>最新公告</legend>
+            <legend ><span style="font-size: 20px">最新公告</span></legend>
         </fieldset>
 		<div style="padding: 20px; background-color: #F2F2F2;">
 		  <div class="layui-row layui-col-space15">
@@ -90,8 +90,12 @@
 		      </div>
 		    </div>
 		  </div>
-		</div> 
-		
+		</div>
+        <hr class="layui-bg-green">
+
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+            <legend ><span style="font-size: 20px">所有公告</span></legend>
+        </fieldset>
 
         <table class="layui-hide" id = "idTest" lay-filter="test">
         </table>
@@ -141,7 +145,7 @@
 
     });
     layui.use('table', function(){
-  var table = layui.table;
+        var table = layui.table;
 
         table.render({
             elem: '#idTest'
