@@ -16,9 +16,14 @@ public interface MaMapper {
         "where unum = #{unum}")
     User getUser(String unum);
 
+@Update("update user" +
+        " set upassword = #{upassword} " +
+        "where unum = #{unum}")
+    Integer updpsw(String upassword,String unum);
+
 //查询用户信息
-@Select("select * from stuff,stuffwage " +
-        "where stuff.unum = stuffwage.unum and stuff.unum = #{unum} " +
+@Select("select * from stuff,stuffwage,department " +
+        "where stuff.unum = stuffwage.unum and stuff.dnum = department.dnum and stuff.unum = #{unum} " +
         "order by month desc limit 0,1")
     Stuff getStuffInfo(String unum);
 

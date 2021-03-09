@@ -21,7 +21,7 @@
             <li class="layui-nav-item" lay-unselect="">
                 <a href="javascript:;"><img src="//t.cn/RCzsdCq" class="layui-nav-img"><span id="xm">xingming</span></a>
                 <dl class="layui-nav-child">
-                    <dd><a href="">公告信息</a></dd>
+					<dd><a data-method="notice" id="passwd">&nbsp;修改密码</a></dd>
 
                 </dl>
             </li>
@@ -89,7 +89,7 @@
 			    <!--公告发布-->
 			    <div class="layui-tab-item">
 			    	
-			  <form class="layui-form" action="">
+			  <form class="layui-form" id="subform" action="">
 			  	
 			  	 <div class="layui-form-item">
 				    <label class="layui-form-label">标题：</label>
@@ -245,11 +245,14 @@
 				data:{title:title,content:content},
 				success:function(data){
 					layer.alert("发布成功!");
+					$("#subform")[0].reset();
+					form.render();
 				},
 				error:function() {
 					layer.alert("发布失败!请尝试重新发布。");
 				}
 			});
+			return false;
 		});
 
 	})

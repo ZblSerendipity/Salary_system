@@ -1,6 +1,7 @@
 package com.example.salary.mapper;
 
 import com.example.salary.domain.Stuff;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -25,10 +26,16 @@ public interface StuffMapper {
 
     //插入新员工
     @Insert("insert into stuff " +
-            "values(#{unum},#{uname},#{position},#{age},#{bankid},#{pid})")
-    Integer addNewStuff(String unum,String uname,Integer age,String bankid,String pid);
+            "values(#{unum},#{uname},#{position},#{dnum},#{age},#{bankid},#{pid},#{gender})")
+    Integer addNewStuff(String unum,String uname,String position,Integer age,String bankid,String pid,String dnum,String gender);
 
     @Insert("insert into stuffwage(stuffwage.unum,stuffwage.month.stuffwage.basic,stuffwage.all) " +
             "values(#{unum},#{month},#{basic},#{basic})")
     Integer newStuffWage(String unum, Date month,Double basic);
+
+    //删除员工
+    @Delete("delete from stuff " +
+            "where unum = #{unum}")
+    Integer delStuff(String unum);
+
 }

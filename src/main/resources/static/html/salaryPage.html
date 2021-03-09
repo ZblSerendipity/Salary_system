@@ -22,7 +22,7 @@
             <li class="layui-nav-item" lay-unselect="">
                 <a href="javascript:;"><img src="//t.cn/RCzsdCq" class="layui-nav-img"><span id="xm">xingming</span></a>
                 <dl class="layui-nav-child">
-                    <dd><a href="">公告信息</a></dd>
+                    <dd><a data-method="notice" id="passwd">&nbsp;修改密码</a></dd>
 
                 </dl>
             </li>
@@ -84,13 +84,13 @@
 </div>
 
 </body>
-<script type="text/html" id="toolbarDemo">
-  <div class="layui-btn-container">
-    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
-    <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
-    <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
-  </div>
-</script>
+<!--<script type="text/html" id="toolbarDemo">-->
+<!--  <div class="layui-btn-container">-->
+<!--    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>-->
+<!--    <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>-->
+<!--    <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>-->
+<!--  </div>-->
+<!--</script>-->
  
 <script type="text/html" id="barDemo">
   <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
@@ -205,7 +205,7 @@
       
       //自定义头工具栏右侧图标 - 提示
       case 'LAYTABLE_TIPS':
-        layer.alert('这是工具栏右侧自定义的一个图标按钮');
+        layer.alert('撸起袖子加油干啊！');
       break;
     };
   });

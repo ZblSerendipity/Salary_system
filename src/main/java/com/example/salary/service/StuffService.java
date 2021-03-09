@@ -22,4 +22,13 @@ public class StuffService {
     public Integer getStuffRows(){
         return stuffMapper.getStuffRows();
     };
+
+    //删除员工
+    public Integer delStuff(String unum){
+        return stuffMapper.delStuff(unum);
+    };
+    //插入新员工
+    public Integer addNewStuff(String unum,String uname,Integer age,String position,String bankid,String pid,String dnum,String gender){
+        return stuffMapper.addNewStuff(unum, uname, position, age, bankid, pid, dnum, gender);
+    };
 }

@@ -8,6 +8,7 @@
 	<script type="text/javascript" rel="stylesheet" src="../js/jquery-1.12.4.js"></script>
 	<script type="text/javascript" rel="stylesheet" src="../js/ajaxUtil.js"></script>
     <script type="text/javascript" src="../layui/layui.js"></script>
+	<script type="text/javascript" src="../js/modi_psw.js"></script>
 
 </head>
 <body class="layui-layout-body">
@@ -21,7 +22,7 @@
             <li class="layui-nav-item" lay-unselect="">
                 <a href="javascript:;"><img src="//t.cn/RCzsdCq" class="layui-nav-img"><span id="name">xingming</span></a>
                 <dl class="layui-nav-child">
-                    <dd><a href="">公告信息</a></dd>
+					<dd><a data-method="notice" id="passwd">&nbsp;修改密码</a></dd>
 
                 </dl>
             </li>
@@ -126,9 +127,9 @@
 			  
 			  <div class="layui-form-item">
 			    <div class="layui-inline">
-			      <label class="layui-form-label"  style="width: 170px;"><i class="layui-icon layui-icon-template-1" style="font-size: 30px; color: #1E9FFF; margin: 20px;"></i>工龄：</label>
+			      <label class="layui-form-label"  style="width: 170px;"><i class="layui-icon layui-icon-template-1" style="font-size: 30px; color: #1E9FFF; margin: 20px;"></i>部门：</label>
 			      <div class="layui-input-inline">
-			        <input type="text" name="seniority" id="seniority" lay-verify="seniority" class="layui-input">
+			        <input type="text" name="department" id="department" lay-verify="seniority" class="layui-input">
 			      </div>
 			    </div>
 			    <div class="layui-inline">
@@ -246,8 +247,8 @@
 				$("#unum").val(json.unum);
 				$("#gender").val(json.gender);
 				$("#age").val(json.age);
-				$("#seniority").val(json.seniority);
-				$("#salary").val(json.salary);
+				$("#department").val(json.dname);
+				$("#salary").val(json.basic);
 				$("#bankid").val(json.bankid) ;
 				$("#position").val(json.position) ;
 				$("#pid").val(json.pid)
