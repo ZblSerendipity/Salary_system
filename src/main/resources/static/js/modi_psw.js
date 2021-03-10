@@ -33,7 +33,7 @@ layui.use(['layer', 'util'], function(){ //独立版的layer无需执行这一�
                         }
                         $.ajax({
                             type:'POST',
-                            url:'/Info/modifyPas',
+                            url:'/login/modpwd',
                             data:{password_old:password_old, password_new:password_new},
                             success:function(data){
                                 if (data == '0') {

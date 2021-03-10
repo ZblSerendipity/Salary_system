@@ -26,9 +26,7 @@
 
                 </dl>
             </li>
-            <!--<li class="layui-nav-item">
-                  用户欢迎您！
-            </li>-->
+
             <li class="layui-nav-item"><a href="#" style="text-decoration:none">退出登录</a></li>
         </ul>
 
@@ -56,10 +54,9 @@
             <!--管理员工工资，员工信息-->
             <li class="layui-nav-item">
 				<a href="http://localhost:8080/html/stuffManagePage.html">员工管理</a>
-				<dl class="layui-nav-child">
-					<dd><a href="http://localhost:8080/html/salaryManagePage.html">员工工资管理</a></dd>
-				</dl>
             </li>
+<!--			财务管理-->
+			<li class="layui-nav-item"><a href="http://localhost:8080/html/salaryManagePage.html">财务管理</a></li>
 
             <!--角色权限管理-->
             <li class="layui-nav-item"><a href="http://localhost:8080/html/powerPage.html">角色管理</a></li>
@@ -129,7 +126,7 @@
 			    <div class="layui-inline">
 			      <label class="layui-form-label"  style="width: 170px;"><i class="layui-icon layui-icon-template-1" style="font-size: 30px; color: #1E9FFF; margin: 20px;"></i>部门：</label>
 			      <div class="layui-input-inline">
-			        <input type="text" name="department" id="department" lay-verify="seniority" class="layui-input">
+			        <input type="text" name="department" id="department" disabled="disabled" lay-verify="seniority" class="layui-input">
 			      </div>
 			    </div>
 			    <div class="layui-inline">
@@ -186,14 +183,14 @@
 			// 	/^[\S]{6,12}$/
 			// 	,'密码必须6到12位，且不能出现空格'
 			// ]
-			,seniority: function(value) {
-				if(!value.match(reg)) {
-					return '请输入规范数值！';
-				}
-				if (Number(value) < 0 || Number(value) > 47) {
-					return '工龄不符合规范！';
-				}
-			}
+			// ,seniority: function(value) {
+			// 	if(!value.match(reg)) {
+			// 		return '请输入规范数值！';
+			// 	}
+			// 	if (Number(value) < 0 || Number(value) > 47) {
+			// 		return '工龄不符合规范！';
+			// 	}
+			// }
 		});
 
 		form.on('submit(L_submit)', function(data) {
@@ -214,18 +211,6 @@
 				}
 			});
 
-			// $.post(
-			// 		'/Info/updateInfo',
-			// 		{age:age, uname:uname, pid:pid},
-			// 		function(data){
-			// 			alert(data);
-			// 			if (data == 1){
-			// 				layer.alert("修改成功！");
-			// 			}else {
-			// 				layer.alert("修改失败！");
-			// 			}
-			// 		}
-			// )
 			return false;
 		});
 	})

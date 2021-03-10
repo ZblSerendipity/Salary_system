@@ -50,5 +50,10 @@ public class MaService {
     public List<Salary> getYWage(String unum){
         return maMapper.getYWage(unum);
     };
+
+    //修改密码
+    public Integer updpsw(String upassword,String unum){
+        return maMapper.updpsw(upassword,unum);
+    };
 }
 

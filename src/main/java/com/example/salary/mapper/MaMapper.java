@@ -15,7 +15,7 @@ public interface MaMapper {
 @Select("select * from user " +
         "where unum = #{unum}")
     User getUser(String unum);
-
+//修改密码
 @Update("update user" +
         " set upassword = #{upassword} " +
         "where unum = #{unum}")
