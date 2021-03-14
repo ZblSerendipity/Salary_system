@@ -33,8 +33,9 @@ public interface MaMapper {
     boolean updateUInfo(String uname,String pid,String unum,Integer age);
 
     //查询用户每月工资信息
-    @Select("select * from stuffwage,user " +
-            "where user.unum = #{unum} and user.unum = stuffwage.unum " +
+    @Select("select * from stuffwage,user,extrawage " +
+            "where user.unum = #{unum} and user.unum = stuffwage.unum" +
+            " and stuffwage.unum = extrawage.unum and stuffwage.month = extrawage.date " +
             "order by month desc " +
             "limit #{begin},#{size}")
     List<Salary> getMonthWage(@Param("unum")String unum,@Param("begin")Integer begin,@Param("size")Integer size);
@@ -43,11 +44,14 @@ public interface MaMapper {
             "where unum = #{unum}")
     Integer getSize(@Param("unum")String unum);
     //查询过去至多12月的工资信息
-    @Select("select * from stuffwage,user " +
+    @Select("select * from stuffwage,user,extrawage " +
             "where user.unum = #{unum} and user.unum = stuffwage.unum " +
+            " and stuffwage.unum = extrawage.unum and stuffwage.month = extrawage.date " +
             "order by month desc " +
             "limit 0,12")
     List<Salary> getYWage(@Param("unum")String unum);
+
+
 
 }
 

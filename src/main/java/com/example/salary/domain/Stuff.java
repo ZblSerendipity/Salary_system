@@ -10,7 +10,7 @@ public class Stuff {
     private String dname;//部门
     private double basic;//工资
     private int age;//年龄
-    private int seniority;//工龄
+    private int absence;//缺勤次数
 
     public String getDname() {
         return dname;
@@ -40,7 +40,7 @@ public class Stuff {
                 ", dname='" + dname + '\'' +
                 ", basic=" + basic +
                 ", age=" + age +
-                ", seniority=" + seniority +
+                ", absence=" + absence +
                 '}';
     }
 
@@ -101,15 +101,15 @@ public class Stuff {
         this.age = age;
     }
 
-    public int getSeniority() {
-        return seniority;
+    public int getAbsence() {
+        return absence;
     }
 
-    public void setSeniority(int seniority) {
-        this.seniority = seniority;
+    public void setAbsence(int absence) {
+        this.absence = absence;
     }
 
-    public Stuff(String unum, String uname, String position, String bankid, String pid, String gender, String dname, double basic, int age, int seniority) {
+    public Stuff(String unum, String uname, String position, String bankid, String pid, String gender, String dname, double basic, int age, int absence) {
         this.unum = unum;
         this.uname = uname;
         this.position = position;
@@ -119,7 +119,7 @@ public class Stuff {
         this.dname = dname;
         this.basic = basic;
         this.age = age;
-        this.seniority = seniority;
+        this.absence = absence;
     }
 
     public Stuff() {

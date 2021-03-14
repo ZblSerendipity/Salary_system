@@ -1,10 +1,8 @@
 package com.example.salary.mapper;
 
+import com.example.salary.domain.Absence;
 import com.example.salary.domain.Stuff;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.sql.Date;
 import java.util.List;
@@ -37,5 +35,44 @@ public interface StuffMapper {
     @Delete("delete from stuff " +
             "where unum = #{unum}")
     Integer delStuff(String unum);
+
+    //根据姓名查找员工号
+    @Select("select unum from stuff" +
+            " where uname = #{uname}")
+    String queryNumByName(String uname);
+    //插入缺勤信息
+    @Insert("insert into absence " +
+            "values(#{unum},#{date})")
+    Integer insertAbs(String unum, Date date);
+
+    @Update("update stuffwage " +
+            "set absence = #{count} " +
+            "where unum = #{unum} and TIMESTAMPDIFF(Day,stuffwage.month,#{date}) <= 30 and TIMESTAMPDIFF(Day,stuffwage.month,#{date}) <= 0 ")
+    Integer updateAbs(String unum,Date date,Integer count);
+
+    @Select("select count(*) from absence" +
+            " where unum = #{unum} and TIMESTAMPDIFF(Day,absence.date,#{date}) <= 0 and TIMESTAMPDIFF(Day,absence.date,#{date}) >= -30")
+    Integer queryAbsDays(String unum , Date date);
+
+    //缺勤人员查询
+    @Select("select * from user,absence " +
+            "where user.unum = absence.unum " +
+            "order by date desc " +
+            "limit #{begin},#{size}")
+    List<Absence> queryAllAbs(Integer begin,Integer size);
+    //缺勤表条数查询
+    @Select("select count(*) from absence ")
+    Integer queryAbsTabRows();
+    //对应缺勤人员查询
+    @Select("select * from user,absence " +
+            "where user.unum = #{unum} and user.unum = absence.unum " +
+            "order by date desc " +
+            "limit #{begin},#{size}")
+    List<Absence> queryAbsByNum(String unum,Integer begin,Integer size);
+    //对应缺勤人员缺勤数查询
+    @Select("select count(*) from absence " +
+            "where unum = #{unum}")
+    Integer queryAbsRowsByUnum(String unum);
+
 
 }

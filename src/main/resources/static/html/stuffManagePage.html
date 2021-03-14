@@ -71,114 +71,161 @@
             <div class="layui-tab layui-tab-card" >
                 <ul class="layui-tab-title">
                     <li class="layui-this">员工总览</li>
-                    <li>添加员工</li>
+                    <li>员工管理</li>
 
 
                 </ul>
                 <div class="layui-tab-content">
+
+
                     <div class="layui-tab-item layui-show">
+
 
                         <table class="layui-hide" id="test" lay-filter="test"></table>
                         <script type="text/html" id="barDemo">
-
+                            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">缺勤详情</a>
+                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="add">缺勤登记</a>
                             <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
                         </script>
 
                     </div>
                     <div class="layui-tab-item">
-                        <div class="layui-card-body">
-                            <form class="layui-form" id="stuffform" action="" method="post">
+
+
+
+                            <div class="layui-card">
+                                <div class="layui-card-header">添加员工</div>
+                                <div class="layui-card-body">
+                                    <div class="layui-card-body">
+                                        <form class="layui-form" id="stuffform" action="" method="post">
+                                            <div class="layui-form-item">
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label" style="width: 100px;">姓名：</label>
+                                                    <div class="layui-input-inline">
+                                                        <input type="text" name="name_new" id="name_new"  class="layui-input">
+                                                    </div>
+                                                </div>
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label"  style="width: 100px;">性别：</label>
+                                                    <div class="layui-input-inline">
+                                                        <select name="modules"id="gender_new" lay-verify="required" lay-search="">
+                                                            <option value="">性别</option>
+                                                            <option value="男">男</option>
+                                                            <option value="女">女</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label"  style="width: 100px;">工号：</label>
+                                                    <div class="layui-input-inline">
+                                                        <input type="text" name="unum_new" id="unum_new"  class="layui-input">
+                                                    </div>
+                                                </div>
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label"  style="width: 100px;">部门：</label>
+                                                    <div class="layui-input-inline">
+                                                        <select name="department_new" id="department_new" lay-verify="department_new" lay-search="">
+                                                            <option value="">部门</option>
+                                                            <option value="02">技术部</option>
+                                                            <option value="03">财务部</option>
+                                                            <option value="04">人事部</option>
+                                                            <option value="05">法务部</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="layui-form-item">
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label"  style="width: 100px;">职位：</label>
+                                                    <div class="layui-input-inline">
+                                                        <select  name="position_new" id="position_new"  lay-verify="position_new" lay-search="">
+                                                            <option value="">职位</option>
+                                                            <option value="经理">经理</option>
+                                                            <option value="普通员工">普通员工</option>
+                                                            <!--                                                <option value="04">人事部</option>-->
+                                                            <!--                                                <option value="05">法务部</option>-->
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label"  style="width: 100px;">年龄：</label>
+                                                    <div class="layui-input-inline">
+                                                        <input type="text" name="age_new" id="age_new" lay-verify="age_new" class="layui-input">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="layui-form-item">
+
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label"  style="width: 100px;">银行账号：</label>
+                                                    <div class="layui-input-inline">
+                                                        <input type="text" name="bankid_new" id="bankid_new"  class="layui-input">
+                                                    </div>
+                                                </div>
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label"  style="width: 100px;">身份证号：</label>
+                                                    <div class="layui-input-inline">
+                                                        <input type="text" name="pid_new" id="pid_new" lay-verify="pid_new"  class="layui-input">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="layui-form-item">
+                                                <div class="layui-inline">
+                                                    <div class="layui-input-inline">
+                                                        <label class="layui-form-label"  style="width: 100px;">
+                                                            <input type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo" value="提交" style="margin-left: 85px;"/>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <div class="layui-card">
+                            <div class="layui-card-header">缺勤登记</div>
+                            <div class="layui-card-body">
+                                <form class="layui-form" id="absform" action="" method="post">
                                 <div class="layui-form-item">
+
                                     <div class="layui-inline">
-                                        <label class="layui-form-label" style="width: 100px;">姓名：</label>
+                                        <label class="layui-form-label"  style="width: 100px;">姓名：</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="name_new" id="name_new"  class="layui-input">
+                                            <input type="text" name="absname" id="absname"  class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-inline">
-                                        <label class="layui-form-label"  style="width: 100px;">性别：</label>
+                                        <label class="layui-form-label"  style="width: 100px;">日期：</label>
                                         <div class="layui-input-inline">
-                                            <select name="modules"id="gender_new" lay-verify="required" lay-search="">
-                                                <option value="">性别</option>
-                                                <option value="男">男</option>
-                                                <option value="女">女</option>
-                                            </select>
+                                            <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+
                                         </div>
                                     </div>
 
                                 </div>
-                                <div class="layui-form-item">
-                                    <div class="layui-inline">
-                                        <label class="layui-form-label"  style="width: 100px;">工号：</label>
-                                        <div class="layui-input-inline">
-                                            <input type="text" name="unum_new" id="unum_new"  class="layui-input">
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <div class="layui-input-inline">
+                                                <label class="layui-form-label"  style="width: 100px;">
+                                                    <input type="submit" class="layui-btn" lay-submit="" lay-filter="formabs" value="提交" style="margin-left: 85px;"/>
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="layui-inline">
-                                        <label class="layui-form-label"  style="width: 100px;">部门：</label>
-                                        <div class="layui-input-inline">
-                                            <select name="department_new" id="department_new" lay-verify="department_new" lay-search="">
-                                                <option value="">部门</option>
-                                                <option value="02">技术部</option>
-                                                <option value="03">财务部</option>
-                                                <option value="04">人事部</option>
-                                                <option value="05">法务部</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="layui-form-item">
-                                    <div class="layui-inline">
-                                        <label class="layui-form-label"  style="width: 100px;">职位：</label>
-                                        <div class="layui-input-inline">
-                                            <select  name="position_new" id="position_new"  lay-verify="position_new" lay-search="">
-                                                <option value="">职位</option>
-                                                <option value="经理">经理</option>
-                                                <option value="普通员工">普通员工</option>
-<!--                                                <option value="04">人事部</option>-->
-<!--                                                <option value="05">法务部</option>-->
-                                            </select>
-
-                                        </div>
-                                    </div>
-                                    <div class="layui-inline">
-                                        <label class="layui-form-label"  style="width: 100px;">年龄：</label>
-                                        <div class="layui-input-inline">
-                                            <input type="text" name="age_new" id="age_new" lay-verify="age_new" class="layui-input">
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="layui-form-item">
-
-                                    <div class="layui-inline">
-                                        <label class="layui-form-label"  style="width: 100px;">银行账号：</label>
-                                        <div class="layui-input-inline">
-                                            <input type="text" name="bankid_new" id="bankid_new"  class="layui-input">
-                                        </div>
-                                    </div>
-                                    <div class="layui-inline">
-                                        <label class="layui-form-label"  style="width: 100px;">身份证号：</label>
-                                        <div class="layui-input-inline">
-                                            <input type="text" name="pid_new" id="pid_new" lay-verify="pid_new"  class="layui-input">
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="layui-form-item">
-                                    <div class="layui-inline">
-                                        <div class="layui-input-inline">
-                                            <label class="layui-form-label"  style="width: 100px;">
-                                                <input type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo" value="提交" style="margin-left: 85px;"/>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
 
@@ -190,10 +237,50 @@
 </div>
 
 </body>
+
 <script type="text/javascript">
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //常规用法
+        laydate.render({
+            elem: '#date'
+        });
+    });
 
     layui.use('form',function () {
         var form = layui.form;
+        //缺勤监听
+        form.on('submit(formabs)',function (data) {
+
+            var absname = $("#absname").val();
+            var date = $("#date").val();
+            $.ajax({
+                type:'POST',
+                url:"/stuff/absence",
+                data:{date:date,absname:absname},
+                success:function(data){
+                    if (data == "0"){
+                        layer.alert("添加失败！请重新尝试。");
+                    }else if (data == "-1"){
+                        layer.alert("日期格式出错！请重新尝试。");
+                    }else if (data == "-2"){
+                        layer.alert("更新出错！请重新尝试。");
+                    }else if (data == "1"){
+                        layer.alert("缺勤添加成功。");
+                        $("#stuffform")[0].reset();
+                        form.render();
+                    }
+
+                },
+                error:function() {
+                    layer.alert("添加失败!请尝试重新添加。");
+                }
+            });
+            return false;
+
+        })
 
         //监听提交
         form.on('submit(formDemo)', function(data){
@@ -254,14 +341,14 @@
     ,url:'/stuff/getAll'
     ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
     ,cols: [[
-      {field:'unum', width:'15%', title: 'ID', sort: true}
+      {field:'unum', width:'10%', title: 'ID', sort: true}
       ,{field:'uname', width:'10%', title: '姓名',sort: true}
-      ,{field:'gender', width:'10%', title: '性别'}
+      ,{field:'gender', width:'5%', title: '性别'}
       ,{field:'dname', width:'15%', title: '部门'}
       ,{field:'position', title: '职位', width: '15%', minWidth: 100} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
       ,{field:'bankid', title: '银行账号', width: '15%', minWidth: 100}
       ,{field:'basic', width:'10%', title: '月工资', sort: true}
-      ,{fixed: 'right', width:'10%',  toolbar: '#barDemo',title:'操作'}
+      ,{fixed: 'right', width:'20%',  toolbar: '#barDemo',title:'操作'}
     ]]
     ,page:true
         ,limit:10
@@ -275,7 +362,6 @@
 
                 layer.confirm('您确定要删除这条员工信息吗?',{btn: ['确定', '取消'],title:"提示"}, function(index){
                     var unum = json.unum;
-
                     $.post(
                         "/stuff/delStuff",
                         {unum : unum},
@@ -283,18 +369,117 @@
                             if (datas == "1"){
                                 obj.del();
                                 layer.alert("删除成功！");
-
                             }else {
                                 layer.alert("删除失败！");
-
                             }
-
                         }
                     )
                     layer.close(index);
-
-
                 });
+            }
+            else if(obj.event === 'add'){
+                var absname = json.uname;
+                var util = layui.util;
+
+                layer.open({
+                    type: 1
+                    ,title: false //不显示标题栏
+                    ,closeBtn: false
+                    ,area: '300px;'
+                    ,shade: 0.8
+                    ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                    ,btn: ['登记', '取消']
+                    ,btnAlign: 'c'
+                    // ,offset:'b'
+                    ,moveType: 1 //拖拽模式，0或者1
+                    ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">' +
+                        '<form id="change_password">' +
+                        '<input type="text" name="abtablename" id="abtablename" lay-verify="name" disabled = "disabled" autocomplete="off" placeholder="缺勤人" class="layui-input"  style="color: #000000"><br><br>'+
+                        '<input type="text" name="abdate" id="abdate" lay-verify="date" autocomplete="off" placeholder="缺勤日期选取" class="layui-input"  style="color: #000000"><br><br>' +
+                        '</form>' +
+                        '</div>'
+                    ,success: function(layero){
+                        $("#abtablename").val(json.uname);
+                        layui.use('laydate', function(){
+                                        var laydate = layui.laydate;
+
+                                        //常规用法
+                                        laydate.render({
+                                            elem: '#abdate'
+                                        });
+                                    });
+                        var btn = layero.find('.layui-layer-btn');
+                        btn.find('.layui-layer-btn0').click(function() {
+                            var unum = json.unum;
+                            var date = util.escape($("#abdate").val());
+
+
+                            $.ajax({
+                                type:'POST',
+                                url:"/stuff/absence",
+                                data:{date:date,absname:absname},
+                                success:function(data){
+                                    if (data == "0"){
+                                        layer.alert("添加失败！请重新尝试。");
+                                    }else if (data == "-1"){
+                                        layer.alert("日期格式出错！请重新尝试。");
+                                    }else if (data == "-2"){
+                                        layer.alert("更新出错！请重新尝试。");
+                                    }else if (data == "1"){
+                                        layer.alert("缺勤添加成功。");
+
+                                    }
+                                },
+                                error:function() {
+                                    layer.alert("添加失败!请尝试重新添加。");
+                                }
+                            });
+                        })
+                    }
+                });
+            }else if (obj.event === 'detail') {
+                var unum = json.unum;
+                var uname = json.uname;
+                var util = layui.util;
+
+
+                layer.open({
+                    type: 1,
+                    title: uname + '的缺勤详情', //不显示标题栏
+                    shadeClose:true,
+                    area: '500px;',
+                    shade: 0.8,
+                    id: 'LAY_layuipro', //设定一个id，防止重复弹出
+                    btnAlign: 'c',
+                    anim:2,
+                    // offset: 'b',
+                    moveType: 1, //拖拽模式，0或者1,
+                    content:                   '<div style="padding: 10px; line-height: 22px; background-color: #f2f2f2; color: #fff; font-weight: 300;">' +
+                        '                    <table class="layui-hide" id="AbsUTab" lay-filter="AbsUTab"></table>' +
+                        '                    </div>'
+                    ,
+                    success: function () {
+
+                        table.render({
+                            elem: '#AbsUTab'
+                            , url: '/stuff/queryAbsByNum'
+                            ,where:{
+                                unum:unum
+                            }
+                            , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                            , cols: [[
+                                {field: 'unum', width: '40%', title: 'ID'}
+                                , {field: 'uname', width: '20%', title: '姓名'}
+                                , {field: 'date', width: '40%', title: '缺勤日期', sort: true}
+                            ]]
+                            , page: true
+                            , limit: 5
+                        });
+
+                    }
+                });
+
+
             }
         });
 });

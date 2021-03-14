@@ -39,7 +39,14 @@ public class MaService {
     //查询用户每月工资信息
     public List<Salary> getMonthWage(String unum, Integer page, Integer size){
         Integer begin = (page - 1) *size;
-        return maMapper.getMonthWage(unum,begin,size);
+        List<Salary> list = maMapper.getMonthWage(unum,begin,size);
+        for (int i = 0; i < list.size() ; i++){
+            list.get(i).setExtra();
+            list.get(i).setAll();
+            list.get(i).setTax();
+            list.get(i).setInfact();
+        }
+        return list;
     };
     //查询用户工资信息条数
     public Integer getSize(String unum){
@@ -48,7 +55,14 @@ public class MaService {
 
     //查询过去至多12月的工资信息
     public List<Salary> getYWage(String unum){
-        return maMapper.getYWage(unum);
+        List<Salary> list = maMapper.getYWage(unum);
+        for (int i = 0; i < list.size() ; i++){
+            list.get(i).setExtra();
+            list.get(i).setAll();
+            list.get(i).setTax();
+            list.get(i).setInfact();
+        }
+        return list;
     };
 
     //修改密码

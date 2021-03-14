@@ -16,7 +16,13 @@ layui.use(['layer', 'util'], function(){ //独立版的layer无需执行这一�
                 ,btn: ['确认修改', '取消']
                 ,btnAlign: 'c'
                 ,moveType: 1 //拖拽模式，0或者1
-                ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;"><form id="change_password"><input type="password" name="password_old" id="password_old" lay-verify="pass" autocomplete="off" placeholder="请验证原始密码" class="layui-input"  style="color: #000000"><br><br><input type="password" name="password_new" id="password_new" lay-verify="pass" autocomplete="off" placeholder="请输入新密码" class="layui-input" style="color: #000000"><br><br><input type="password" name="password_con" id="password_con" lay-verify="pass" autocomplete="off" placeholder="请确认密码" class="layui-input" style="color: #000000"></form></div>'
+                ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">' +
+                    '<form id="change_password">' +
+                    '<input type="password" name="password_old" id="password_old" lay-verify="pass" autocomplete="off" placeholder="请验证原始密码" class="layui-input"  style="color: #000000"><br><br>' +
+                    '<input type="password" name="password_new" id="password_new" lay-verify="pass" autocomplete="off" placeholder="请输入新密码" class="layui-input" style="color: #000000"><br><br>' +
+                    '<input type="password" name="password_con" id="password_con" lay-verify="pass" autocomplete="off" placeholder="请确认密码" class="layui-input" style="color: #000000">' +
+                    '</form>' +
+                    '</div>'
                 ,success: function(layero){
                     var btn = layero.find('.layui-layer-btn');
                     btn.find('.layui-layer-btn0').click(function() {
