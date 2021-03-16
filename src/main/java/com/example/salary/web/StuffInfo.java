@@ -113,7 +113,7 @@ public class StuffInfo {
         jsonObject.put("code",0 );
         jsonObject.put("msg","");
         Integer rows = stuffService.queryAbsRowsByUnum(unum);
-        System.out.println(rows);
+
         jsonObject.put("count",rows);
         jsonObject.put("data", stuffService.queryAbsByNum(unum,Integer.parseInt(page),Integer.parseInt(size)));
         return jsonObject.toString();

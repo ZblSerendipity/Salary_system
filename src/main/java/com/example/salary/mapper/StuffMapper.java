@@ -75,4 +75,13 @@ public interface StuffMapper {
     Integer queryAbsRowsByUnum(String unum);
 
 
+    //插入审核信息
+    @Insert("insert into detail_extrawage " +
+            "values(#{onum},#{mnum},#{status},#{passnum},#{date})")
+    Integer insOrder(String onum,String mnum,String status,String passnum,Date date);
+
+
+
+
+
 }

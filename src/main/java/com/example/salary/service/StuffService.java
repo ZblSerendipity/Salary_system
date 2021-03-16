@@ -2,6 +2,7 @@ package com.example.salary.service;
 
 
 import com.example.salary.domain.Absence;
+import com.example.salary.domain.Salary;
 import com.example.salary.domain.Stuff;
 import com.example.salary.mapper.StuffMapper;
 import org.springframework.stereotype.Service;
@@ -69,4 +70,12 @@ public class StuffService {
          public Integer queryAbsRowsByUnum(String unum){
              return stuffMapper.queryAbsRowsByUnum(unum);
          };
+
+    //批量插入员工工资信息
+    public boolean insStuffsWage(List<Salary> list){
+
+
+
+        return false;
+    }
 }
