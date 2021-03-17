@@ -90,10 +90,10 @@
 							</div>
 							</script>
 							<table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>
-							<script type="text/html" id="barDemo">
-								<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">工资发放</a>
-								<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="add">工资查询</a>
-								<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+							<script type="text/html" id="barDemo" lay-filter="test">
+								<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">工资查询</a>
+								<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="add">工资发放</a>
+<!--								<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
 							</script>
 
 							<div class="demoTable">
@@ -103,7 +103,7 @@
 								</div>
 								<button class="layui-btn" data-type="reload">搜索</button>
 							</div>
-
+							<table class="layui-hide" id="auditing-tab" lay-filter="auditing-tab"></table>
 						</div>
 
 					</div>
@@ -151,7 +151,6 @@
 		table.render({
 			elem: '#audit_tab'
 			,url: '/demo/table/user/'
-			// ,toolbar: '#toolbarDemo'
 			,cols: [[
 				{checkbox: true, fixed: true}
 				,{field:'onum', title: '审核单号', width:120, sort: true, fixed: true}
@@ -160,7 +159,6 @@
 				,{field:'gender', title: '性别', width:80, sort: true}
 				,{field:'department', title: '部门', width:80}
 				,{field:'position', title: '职位', width:80}
-				// ,{field:'bankid', title: '银行账号', sort: true, width:150}
 				,{field:'date', title: '时间', width:180}
 				,{field:'status', title: '审核状态', width:120}
 				,{fixed:'right', title: '操作',toolbar: '#auditDemo'}
@@ -169,30 +167,165 @@
 			,page: true
 			,height: 310
 		});
+		//财务提交审核进度表
+		table.render({
+			elem: '#auditing-tab'
+			,url: '/demo/table/user/'
+			,cols: [[
+				{checkbox: true, fixed: true}
+				,{field:'onum', title: '审核单单号', width:150, sort: true, fixed: true}
+				,{field:'oname', title: '审核单名', width:120}
+				,{field:'mnum', title: '提交者工号', width:150}
+				,{field:'status', title: '通过状态', width:120, sort: true}
+				,{field:'passnum', title: '通过者工号', width:160}
+				,{field:'passtime', title: '通过时间', sort: true}
+				// ,{fixed:'right', title: '操作',toolbar: '#barDemo'}
+			]]
+			,id: 'auditing-load'
+			,page: true
+			,height: 310
+		});
 
 		//方法级渲染
 		table.render({
 			elem: '#LAY_table_user'
-			,url: '/demo/table/user/'
+			,url: '/stuff/getAll'
 			,toolbar: '#toolbarDemo'
 			,cols: [[
 				{checkbox: true, fixed: true}
 				,{field:'unum', title: 'ID', width:120, sort: true, fixed: true}
 				,{field:'uname', title: '员工名', width:80}
 				,{field:'gender', title: '性别', width:80, sort: true}
-				,{field:'department', title: '部门', width:80}
-				,{field:'position', title: '职位', width:80}
+				,{field:'dname', title: '部门', width:80}
+				,{field:'position', title: '职位', width:120}
 				,{field:'bankid', title: '银行账号', sort: true, width:150}
-				,{field:'wage', title: '工资', sort: true, width:80}
-				,{field:'date', title: '上次发放时间', width:180}
-				,{field:'status', title: '审核状态', width:120}
+				,{field:'basic', title: '工资', sort: true, width:80}
+				// ,{field:'date', title: '上次发放时间', width:180}
 				,{fixed:'right', title: '操作',toolbar: '#barDemo'}
 			]]
 			,id: 'testReload'
 			,page: true
-			,height: 310
+			// ,height: 310
 		});
+		//监听toolbar工具条
+		table.on('tool(test)', function(obj){
+			var data = obj.data;
+			var json = eval(data);
+			if(obj.event === 'add'){
+				// var absname = json.uname;
+				layer.alert("1");
+				var util = layui.util;
+				layer.tab({
+					area: ['600px', '300px'],
+					tab: [{
+						title: '基本工资发放'
+						,area:'600px'
+						,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">' +
+								'<form id="change_password">' +
+								'<input type="text" name="unum" id="unum" lay-verify="num" disabled = "disabled" autocomplete="off" placeholder="工号" class="layui-input"  style="color: #000000"><br><br>'+
+								'<input type="text" name="uname" id="uname" lay-verify="name" disabled = "disabled" autocomplete="off" placeholder="姓名" class="layui-input"  style="color: #000000"><br><br>'+
+								'<input type="text" name="basic" id="basic" lay-verify="basic"  autocomplete="off" placeholder="基础工资" class="layui-input"  style="color: #000000"><br><br>'+
+								'<input type="text" name="overtime" id="overtime" lay-verify="overtime"  autocomplete="off" placeholder="加班费" class="layui-input"  style="color: #000000"><br><br>'+
+								'<input type="text" name="insurance" id="insurance" lay-verify="insurance"  autocomplete="off" placeholder="五险一金" class="layui-input"  style="color: #000000"><br><br>'+
+								'<input type="text" name="month" id="month" lay-verify="date" autocomplete="off" placeholder="日期选取" class="layui-input"  style="color: #000000"><br><br>' +
+								'</form>' +
+								'</div>'
+						,btn: ['登记', '取消']
+						,btnAlign: 'c'
+						,success: function(layero) {
+							$("#abtablename").val(json.uname);
+							layui.use('laydate', function () {
+								var laydate = layui.laydate;
 
+								//常规用法
+								laydate.render({
+									elem: '#month'
+								});
+							});
+							var btn = layero.find('.layui-layer-btn');
+							btn.find('.layui-layer-btn0').click(function () {
+								var unum = json.unum;
+								var uname = json.uname;
+								var basic = util.escape($("#basic").val());
+								var insurance = util.escape($("#insurance").val());
+								var month = util.escape($("#month").val());
+
+
+								$.ajax({
+									type: 'POST',
+									url: "/financial/insertStuff",
+									data: {unum: unum, basic: basic, insurance: insurance, month: month},
+									success: function (data) {
+										if (data == "0") {
+											layer.alert("添加失败！请重新尝试。");
+										} else if (data == "-1") {
+											layer.alert("日期格式出错！请重新尝试。");
+										} else if (data == "-2") {
+											layer.alert("更新出错！请重新尝试。");
+										} else if (data == "1") {
+											layer.alert("缺勤添加成功。");
+
+										}
+									},
+									error: function () {
+										layer.alert("添加失败!请尝试重新添加。");
+									}
+								})
+
+							})
+						}
+					}, {
+						title: '补贴发放',
+						content: '内容2'
+					}]
+				});
+
+
+			}else if (obj.event === 'detail') {
+				var unum = json.unum;
+				var uname = json.uname;
+				var util = layui.util;
+
+
+				layer.open({
+					type: 1,
+					title: uname + '的缺勤详情', //不显示标题栏
+					shadeClose:true,
+					area: '500px;',
+					shade: 0.8,
+					id: 'LAY_layuipro', //设定一个id，防止重复弹出
+					btnAlign: 'c',
+					anim:2,
+					// offset: 'b',
+					moveType: 1, //拖拽模式，0或者1,
+					content:                   '<div style="padding: 10px; line-height: 22px; background-color: #f2f2f2; color: #fff; font-weight: 300;">' +
+							'                    <table class="layui-hide" id="AbsUTab" lay-filter="AbsUTab"></table>' +
+							'                    </div>'
+					,
+					success: function () {
+
+						table.render({
+							elem: '#AbsUTab'
+							, url: '/stuff/queryAbsByNum'
+							,where:{
+								unum:unum
+							}
+							, cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+							, cols: [[
+								{field: 'unum', width: '40%', title: 'ID'}
+								, {field: 'uname', width: '20%', title: '姓名'}
+								, {field: 'date', width: '40%', title: '缺勤日期', sort: true}
+							]]
+							, page: true
+							, limit: 5
+						});
+
+					}
+				});
+
+
+			}
+		});
 		var $ = layui.$, active = {
 			reload: function(){
 				var demoReload = $('#demoReload');
