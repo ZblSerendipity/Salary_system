@@ -33,9 +33,9 @@ public interface MaMapper {
     boolean updateUInfo(String uname,String pid,String unum,Integer age);
 
     //查询用户每月工资信息
-    @Select("select * from stuffwage,user,extrawage,order " +
-            "where user.unum = #{unum} and user.unum = stuffwage.unum and stuffwage.onum = order.onum " +
-            " and stuffwage.unum = extrawage.unum and stuffwage.month = extrawage.date and order.status = 1 " +
+    @Select("select * from stuffwage,user,extrawage,orders " +
+            "where user.unum = #{unum} and user.unum = stuffwage.unum and stuffwage.onum = orders.onum " +
+            " and stuffwage.unum = extrawage.unum and stuffwage.month = extrawage.date and orders.status = '已通过' " +
             "order by month desc " +
             "limit #{begin},#{size}")
     List<Salary> getMonthWage(@Param("unum")String unum,@Param("begin")Integer begin,@Param("size")Integer size);
