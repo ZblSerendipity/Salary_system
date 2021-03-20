@@ -1,6 +1,8 @@
 package com.example.salary.service;
 
+import com.example.salary.domain.Extra;
 import com.example.salary.domain.Order;
+import com.example.salary.domain.Salary;
 import com.example.salary.mapper.FinancialMapper;
 import org.apache.ibatis.annotations.Insert;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,10 @@ public class FinancialService {
     //插入审查单
     public Integer insertAudit(String onum, String oname, String mnum, Date subtime, String status){
         return financialMapper.insertAudit(onum, oname, mnum, subtime, status);
+    };
+    //插入对应的detail_extrawage表
+    public  Integer insertExtra(String onum,String unum,Date date,String type,Double sum){
+        return financialMapper.insertExtra(onum, unum, date, type, sum);
     };
     //通过审查单
     public  Integer passAudit(String status,String passnum,String onum,Date time){
@@ -56,4 +62,23 @@ public class FinancialService {
         Integer begin = (page - 1)* size;
         return financialMapper.queryOpt(onum,begin,size);
     };
+    //查询对应审查单号的基本工资详情
+    public List<Salary> getAudWage(String onum, Integer begin, Integer size){
+        return  financialMapper.getAudWage(onum, begin, size);
+    };
+    //查询对应审查单号的补贴单详情
+    public List<Extra> getExtraWage(String onum, Integer begin, Integer size){
+        return financialMapper.getExtraWage(onum, begin, size);
+    };
+    public List<Extra> getExtraWage(String onum){
+        return financialMapper.getExtraWage(onum);
+    };
+    //更新extrawage
+    public Integer updExtraWage(String type,Double sum,String unum,Date date){
+        return financialMapper.updExtraWage(type, sum, unum, date);
+    };
+    //更新orders
+//    public Integer updOrders(String status,String onum){
+//        return financialMapper.updOrders(status, onum);
+//    };
 }

@@ -172,24 +172,85 @@
 			var data = obj.data;
 			var json = eval(data);
 			if(obj.event === 'detail'){
-				// var absname = json.uname;
 				var util = layui.util;
-				layer.open({
-					type: 1
-					,title: '基本工资发放' //不显示标题栏
-					,closeBtn: false
-					,area: '300px;'
-					,shade: 0.8
-					,id: 'LAY_layuipro' //设定一个id，防止重复弹出
-					,btn: ['登记', '取消']
-					,btnAlign: 'c'
-					// ,offset:'b'
-					,moveType: 1 //拖拽模式，0或者1
-					,content:
-					,success: function(layero) {
+				var onum = json.onum;
+				var flag = 0;
+				//判断审核单类型，基础工资表还是补贴？
+				$.post(
+						"//"
+						,{onum:onum}
+						,function (data) {
 
-					}
-				});
+
+							if (data === "1"){
+								flag = 1;
+							}
+						}
+				)
+				//基础工资详情
+				if (flag = 0){
+					layer.open({
+						type: 1
+						,title: '工资详情表' //不显示标题栏
+						,closeBtn: false
+						,area: '600px;'
+						,shade: 0.8
+						,shadeClose:true
+						,id: 'LAY_layuidetail' //设定一个id，防止重复弹出
+						,moveType: 1 //拖拽模式，0或者1
+						,content:  '<div style="padding: 10px; line-height: 22px; background-color: #f2f2f2; color: #fff; font-weight: 300;">' +
+								'                    <table class="layui-hide" id="DetailTab" lay-filter="DetailTab"></table>' +
+								'                    </div>'
+						,success: function(layero) {
+							table.render({
+								elem: '#DetailTab'
+								, url: ''
+								, cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+								, cols: [[
+									{field: 'unum', width: '20%', title: 'ID', sort: true}
+									, {field: 'uname', width: '10%', title: '姓名'}
+									, {field: 'basic', width: '20%', title: '基础工资', sort: true}
+									, {field: 'basic', width: '20%', title: '五险一金', sort: true}
+									, {field: 'month', width: '20%', title: '发放日期'}
+								]]
+								, page: true
+								, limit: 5
+							});
+
+						}
+					});
+				}else if (flag = 1){
+					layer.open({
+						type: 1
+						,title: '补贴详情表' //不显示标题栏
+						,closeBtn: false
+						,area: '500px;'
+						,shade: 0.8
+						,shadeClose:true
+						,id: 'LAY_layuidetail' //设定一个id，防止重复弹出
+						,moveType: 1 //拖拽模式，0或者1
+						,content:  '<div style="padding: 10px; line-height: 22px; background-color: #f2f2f2; color: #fff; font-weight: 300;">' +
+								'                    <table class="layui-hide" id="DetailTab" lay-filter="DetailTab"></table>' +
+								'                    </div>'
+						,success: function(layero) {
+							table.render({
+								elem: '#DetailTab'
+								, url: ''
+								, cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+								, cols: [[
+									{field: 'unum', width: '30%', title: 'ID', sort: true}
+									, {field: 'uname', width: '20%', title: '姓名'}
+									, {field: 'basic', width: '25%', title: '补贴类型', sort: true}
+									, {field: 'month', width: '25%', title: '发放日期'}
+								]]
+								, page: true
+								, limit: 5
+							});
+
+						}
+					});
+				}
+
 
 
 
