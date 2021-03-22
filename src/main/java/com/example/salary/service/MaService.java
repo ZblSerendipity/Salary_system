@@ -69,5 +69,6 @@ public class MaService {
     public Integer updpsw(String upassword,String unum){
         return maMapper.updpsw(upassword,unum);
     };
+
 }
 

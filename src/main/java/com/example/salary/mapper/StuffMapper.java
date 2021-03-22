@@ -17,6 +17,19 @@ public interface StuffMapper {
 
             )
     List<Stuff> queryAll(Integer count);
+    //根据员工姓名查找员工
+    @Select("select unum from user " +
+            "where uname = #{uname}")
+    String queryUnumByUname(String uname);
+    //查询对应工号的员工
+    @Select("select distinct stuff.unum,uname,gender,position,dname,bankid,stuffwage.basic" +
+            " from (stuff left join stuffwage on stuff.unum = stuffwage.unum) " +
+            "left join department on department.dnum = stuff.dnum " +
+            "where stuff.unum = #{unum}" +
+            "order by stuffwage.month desc limit 0 , 1"
+
+    )
+    List<Stuff> queryStuff(String unum);
 
     //查询员工数
     @Select("select count(*) from stuff")
@@ -35,6 +48,12 @@ public interface StuffMapper {
     @Delete("delete from stuff " +
             "where unum = #{unum}")
     Integer delStuff(String unum);
+
+    //根据员工号查找员工姓名
+    @Select("select uname from user " +
+            "where unum = #{unum}")
+    String queryNameByNum(String unum);
+
 
     //根据姓名查找员工号
     @Select("select unum from stuff" +

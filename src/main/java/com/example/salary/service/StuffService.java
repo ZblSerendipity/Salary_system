@@ -78,4 +78,16 @@ public class StuffService {
 
         return false;
     }
+    //根据员工号查找员工姓名
+    public String queryNameByNum(String unum){
+        return stuffMapper.queryNameByNum(unum);
+    };
+    //根据员工姓名查找员工
+    public String queryUnumByUname(String uname){
+        return stuffMapper.queryNumByName(uname);
+    };
+    //查询对应工号的员工
+    public List<Stuff> queryStuff(String unum){
+        return stuffMapper.queryStuff(unum);
+    };
 }

@@ -222,22 +222,6 @@
 		form.on('submit(formDemo)', function(data){
 			var title = $("#title").val();
 			var content = $("#content").val();
-			//
-			// $.post(
-			// 		"/BoardInfo/newBoard",
-			// 		{title:title,content:content},
-			// 		function (data) {
-			//
-			// 			layer.alert("发布成功!");
-			// 			if (data == "1"){
-			// 				alert("发布成功!");
-			//
-			//
-			// 			}else{
-			// 				alert("发布失败!请尝试重新发布。");
-			// 			}
-			// 		}
-			// )
 
 			$.ajax({
 				type:'POST',

@@ -33,6 +33,31 @@ public class StuffInfo {
 
         return jsonObject.toString();
     }
+    @RequestMapping(value = "/getStuff")String getStuff(HttpServletResponse response,@RequestParam(value = "info")String info,
+                                                        @RequestParam(value = "limit")String size, @RequestParam(value = "page")String page)throws Exception{
+
+        JSONObject jsonObject = new JSONObject();
+        response.setContentType("text/json;charset=utf-8");
+        jsonObject.put("code",0 );
+        jsonObject.put("msg","");
+        Integer rows = 0;
+        if (info.equals("all")){
+            rows = stuffService.getStuffRows();
+            jsonObject.put("count",rows);
+            jsonObject.put("data",stuffService.queryAll(rows));
+        }else {
+            String unum  = stuffService.queryUnumByUname(info);
+            if (unum == null){
+                jsonObject.put("count",1);
+                jsonObject.put("data",stuffService.queryStuff(info));
+            }else {
+                jsonObject.put("count",1);
+                jsonObject.put("data",stuffService.queryStuff(unum));
+            }
+
+        }
+        return jsonObject.toString();
+    }
     //删除员工
     @RequestMapping(value = "/delStuff")void delStuff(HttpSession session,HttpServletResponse response,
                                                         @RequestParam(value = "unum")String unum_del)throws Exception{

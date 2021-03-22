@@ -4,7 +4,6 @@ import com.example.salary.domain.Extra;
 import com.example.salary.domain.Order;
 import com.example.salary.domain.Salary;
 import com.example.salary.mapper.FinancialMapper;
-import org.apache.ibatis.annotations.Insert;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -63,15 +62,50 @@ public class FinancialService {
         return financialMapper.queryOpt(onum,begin,size);
     };
     //查询对应审查单号的基本工资详情
-    public List<Salary> getAudWage(String onum, Integer begin, Integer size){
+    public List<Salary> getAudWage(String onum, Integer page, Integer size){
+        Integer begin = (page - 1)* size;
         return  financialMapper.getAudWage(onum, begin, size);
     };
-    //查询对应审查单号的补贴单详情
-    public List<Extra> getExtraWage(String onum, Integer begin, Integer size){
-        return financialMapper.getExtraWage(onum, begin, size);
+
+    public Integer getAudWageRows(String onum){
+        return financialMapper.getAudWageRows(onum);
     };
-    public List<Extra> getExtraWage(String onum){
-        return financialMapper.getExtraWage(onum);
+    //查询对应审查单号的补贴单详情
+    public List<Extra> getExtraWage(String onum, Integer page, Integer size){
+        Integer begin = (page - 1)* size;
+        List<Extra> list = financialMapper.getExtraWage(onum, begin, size);
+        for (int i = 0; i < list.size(); i++){
+            switch (list.get(i).getType()){
+                case "overtime":
+                    list.get(i).setType("加班费");
+                    break;
+                case "eating":
+                    list.get(i).setType("餐补");
+                    break;
+                case "traffic":
+                    list.get(i).setType("交通补贴");
+                    break;
+                case "communication":
+                    list.get(i).setType("通讯补贴");
+                    break;
+                case "performance":
+                    list.get(i).setType("绩效");
+                    break;
+                case  "bonus":
+                    list.get(i).setType("奖金");
+                    break;
+
+            }
+
+
+        }
+        return list;
+    };
+    public Integer getExtraWageRows(String onum){
+        return financialMapper.getExtraWageRows(onum);
+    };
+    public List<Extra> getExtraWages(String onum){
+        return financialMapper.getExtraWages(onum);
     };
     //更新extrawage
     public Integer updExtraWage(String type,Double sum,String unum,Date date){

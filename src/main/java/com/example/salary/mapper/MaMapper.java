@@ -39,6 +39,7 @@ public interface MaMapper {
             "order by month desc " +
             "limit #{begin},#{size}")
     List<Salary> getMonthWage(@Param("unum")String unum,@Param("begin")Integer begin,@Param("size")Integer size);
+
     //查询用户工资信息条数
     @Select("select count(*) from stuffwage " +
             "where unum = #{unum}")

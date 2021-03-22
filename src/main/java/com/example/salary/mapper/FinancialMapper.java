@@ -42,7 +42,7 @@ public interface FinancialMapper {
     List<Order> getAll(Integer begin,Integer size);
     //通过审查单
     @Update("update orders " +
-            "set status = #{status} and passnum = #{passnum} and time = #{time}  " +
+            "set status = #{status} , passnum = #{passnum} , time = #{time}  " +
             "where onum = #{onum}")
     Integer passAudit(String status,String passnum,String onum,Date time);
     //查看审查单数量
@@ -65,21 +65,29 @@ public interface FinancialMapper {
             "limit #{begin},#{size}")
     List<Salary> getAudWage(String onum,Integer begin,Integer size);
 
+    @Select("select count(*) from stuffwage " +
+            "where  onum = #{onum} ")
+    Integer getAudWageRows(String onum);
+
     //查询对应审查单号的补贴单详情
-    @Select(("select * from user,detail_extrawage " +
+    @Select("select * from user,detail_extrawage " +
             "where user.unum = detail_extrawage.unum and onum = #{onum} " +
             "order by sum desc " +
-            "limit #{begin},#{size}"))
+            "limit #{begin},#{size}")
     List<Extra> getExtraWage(String onum,Integer begin,Integer size);
+
+    @Select("select count(*) from detail_extrawage " +
+            "where  onum = #{onum} " )
+    Integer getExtraWageRows(String onum);
 
     @Select(("select * from user,detail_extrawage " +
             "where user.unum = detail_extrawage.unum and onum = #{onum} " +
             "order by sum desc " ))
-    List<Extra> getExtraWage(String onum);
+    List<Extra> getExtraWages(String onum);
     //更新extrawage
     @Update("update extrawage" +
-            " set #{type} = #{sum} " +
-            "where unum = #{unum} and TIMESTAMPDIFF(Day,date,#{date}) <= 30 and TIMESTAMPDIFF(Day,date,#{date}) >= 0")
+            " set ${type} = #{sum} " +
+            "where unum = #{unum} and TIMESTAMPDIFF(Day,extrawage.date,#{date}) <= 30 and TIMESTAMPDIFF(Day,extrawage.date,#{date}) <= 0")
     Integer updExtraWage(String type,Double sum,String unum,Date date);
     //更新orders
 //    @Update("update orders " +

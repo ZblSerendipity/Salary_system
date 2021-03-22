@@ -100,15 +100,29 @@ public class FinancialInfo {
         return jsonObject.toString();
     }
     //审核表（上级）
-    @RequestMapping(value = "/auditing")void auditing(HttpServletResponse response, HttpSession session,
-                                                      @RequestParam(value = "onum")String onum,@RequestParam(value = "status")String status)throws Exception{
+    @RequestMapping(value = "/detail")String detail(HttpServletResponse response, HttpSession session,
+                                                      @RequestParam(value = "onum")String onum,@RequestParam(value = "limit")String size,
+                                                  @RequestParam(value = "page")String page)throws Exception{
         //        String unum = session.getAttribute("unum").toString();
-        long now = System.currentTimeMillis();
-        java.sql.Date time = new java.sql.Date(now);
-        Integer content = financialService.passAudit(status,"2017110457",onum,time);
-        Integer opt = financialService.insertOpt(onum,"2017110457",status,time);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code",0 );
+        jsonObject.put("msg","");
         response.setContentType("text/json;charset=utf-8");
-        response.getWriter().write(content == 0 ? "0":"1");
+        Integer rows = 0;
+        if (onum.substring(0,1).equals("B")){
+            rows = financialService.getAudWageRows(onum);
+            jsonObject.put("count",rows);
+            jsonObject.put("data", financialService.getAudWage(onum,Integer.parseInt(page),Integer.parseInt(size)));
+        }else if (onum.substring(0,1).equals("E")){
+            rows = financialService.getExtraWageRows(onum);
+            jsonObject.put("count",rows);
+            jsonObject.put("data", financialService.getExtraWage(onum,Integer.parseInt(page),Integer.parseInt(size)));
+        }
+        System.out.println(jsonObject);
+        return jsonObject.toString();
+
+
     }
     //审核逻辑
     @RequestMapping(value = "/howAudit")void howAudit(HttpServletResponse response,HttpSession session,
@@ -120,6 +134,7 @@ public class FinancialInfo {
         Integer upd = 0;
         Integer updExtDetail = 0;
         Integer updOpt = 0;
+        response.setContentType("text/json;charset=utf-8");
         //判断哪一类审核单
         if (onum.substring(0,1).equals("B")){
             if (flag.equals("pass")){
@@ -130,10 +145,11 @@ public class FinancialInfo {
                 upd = financialService.passAudit("已退回","2017110457",onum,time);
                 updOpt = financialService.insertOpt(onum,"2017110457","退回",time);
             }
-
+        //补贴单通过后更新extrawage表，，更新审核表和操作表
         }else if (onum.substring(0,1).equals("E")){
             if (flag.equals("pass")){
-                List<Extra> list = financialService.getExtraWage(onum);
+                List<Extra> list = financialService.getExtraWages(onum);
+                System.out.println(list);
                 for (int i = 0;i < list.size();i++){
                     financialService.updExtraWage(list.get(i).getType(),list.get(i).getSum(),list.get(i).getUnum(),list.get(i).getDate());
                     updExtDetail++;
@@ -147,6 +163,18 @@ public class FinancialInfo {
 
         }else {
 
+            response.getWriter().write("-1");
+
+        }
+
+        if (upd !=0 && updOpt !=0){
+            response.getWriter().write("1");
+        }else if (upd ==0 && updOpt !=0){
+            //出错
+            response.getWriter().write("0");
+        }else if (upd ==0 && updOpt ==0){
+            //插入操作出错
+            response.getWriter().write("-2");
         }
 
     }

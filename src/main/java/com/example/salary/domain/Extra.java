@@ -6,6 +6,7 @@ import java.sql.Date;
 public class Extra {
     private String onum;
     private String unum;
+    private String uname;
     private Date date;
     private String type;
     private Double sum;
@@ -15,15 +16,25 @@ public class Extra {
         return "Extra{" +
                 "onum='" + onum + '\'' +
                 ", unum='" + unum + '\'' +
+                ", uname='" + uname + '\'' +
                 ", date=" + date +
                 ", type='" + type + '\'' +
                 ", sum=" + sum +
                 '}';
     }
 
-    public Extra(String onum, String unum, Date date, String type, Double sum) {
+    public String getUname() {
+        return uname;
+    }
+
+    public void setUname(String uname) {
+        this.uname = uname;
+    }
+
+    public Extra(String onum, String unum, String uname, Date date, String type, Double sum) {
         this.onum = onum;
         this.unum = unum;
+        this.uname = uname;
         this.date = date;
         this.type = type;
         this.sum = sum;

@@ -176,19 +176,13 @@
 				var onum = json.onum;
 				var flag = 0;
 				//判断审核单类型，基础工资表还是补贴？
-				$.post(
-						"//"
-						,{onum:onum}
-						,function (data) {
+				console.log(onum.substring(0,1));
+				if (onum.substring(0,1) === 'E'){
+					flag  = 1;
+				}
 
-
-							if (data === "1"){
-								flag = 1;
-							}
-						}
-				)
 				//基础工资详情
-				if (flag = 0){
+				if (flag == 0){
 					layer.open({
 						type: 1
 						,title: '工资详情表' //不显示标题栏
@@ -204,8 +198,11 @@
 						,success: function(layero) {
 							table.render({
 								elem: '#DetailTab'
-								, url: ''
+								, url: '/financial/detail'
 								, cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+								,where:{
+									onum:onum
+								}
 								, cols: [[
 									{field: 'unum', width: '20%', title: 'ID', sort: true}
 									, {field: 'uname', width: '10%', title: '姓名'}
@@ -219,12 +216,12 @@
 
 						}
 					});
-				}else if (flag = 1){
+				}else if (flag == 1){
 					layer.open({
 						type: 1
 						,title: '补贴详情表' //不显示标题栏
 						,closeBtn: false
-						,area: '500px;'
+						,area: '600px;'
 						,shade: 0.8
 						,shadeClose:true
 						,id: 'LAY_layuidetail' //设定一个id，防止重复弹出
@@ -235,13 +232,17 @@
 						,success: function(layero) {
 							table.render({
 								elem: '#DetailTab'
-								, url: ''
+								, url: '/financial/detail'
 								, cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+								,where:{
+									onum:onum
+								}
 								, cols: [[
-									{field: 'unum', width: '30%', title: 'ID', sort: true}
-									, {field: 'uname', width: '20%', title: '姓名'}
-									, {field: 'basic', width: '25%', title: '补贴类型', sort: true}
-									, {field: 'month', width: '25%', title: '发放日期'}
+									{field: 'unum', width: '20%', title: 'ID', sort: true}
+									, {field: 'uname', width: '15%', title: '姓名'}
+									, {field: 'type', width: '20%', title: '补贴类型', sort: true}
+									, {field: 'date', width: '20%', title: '发放日期'}
+									, {field: 'sum', width: '25%', title: '发放金额'}
 								]]
 								, page: true
 								, limit: 5
@@ -250,55 +251,60 @@
 						}
 					});
 				}
-
-
-
-
+				//通过审核单
 			}else if (obj.event === 'pass') {
-				var unum = json.unum;
-				var uname = json.uname;
-				var util = layui.util;
-
-
-				layer.open({
-					type: 1,
-					title: uname + '的缺勤详情', //不显示标题栏
-					shadeClose:true,
-					area: '500px;',
-					shade: 0.8,
-					id: 'LAY_layuipro', //设定一个id，防止重复弹出
-					btnAlign: 'c',
-					anim:2,
-					// offset: 'b',
-					moveType: 1, //拖拽模式，0或者1,
-					content:                   '<div style="padding: 10px; line-height: 22px; background-color: #f2f2f2; color: #fff; font-weight: 300;">' +
-							'                    <table class="layui-hide" id="AbsUTab" lay-filter="AbsUTab"></table>' +
-							'                    </div>'
-					,
-					success: function () {
-
-						table.render({
-							elem: '#AbsUTab'
-							, url: '/stuff/queryAbsByNum'
-							,where:{
-								unum:unum
+				var onum = json.onum;
+				layer.confirm('确定通过该审查单么？', function(index){
+					$.ajax({
+						type:'POST',
+						url:"/financial/howAudit",
+						data:{onum:onum,flag:"pass"},
+						success:function(data){
+							if (data == "1"){
+								layer.alert("已通过！");
+							}else if (data == "0"){
+								layer.alert("审核失败！");
+							}else if (data == "-1"){
+								layer.alert("审核出错！");
+							}else if (data == "-2"){
+								layer.alert("插入出错！");
 							}
-							, cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
-							, cols: [[
-								{field: 'unum', width: '40%', title: 'ID'}
-								, {field: 'uname', width: '20%', title: '姓名'}
-								, {field: 'date', width: '40%', title: '缺勤日期', sort: true}
-							]]
-							, page: true
-							, limit: 5
-						});
 
-					}
+						},
+						error:function() {
+							layer.alert("操作失败!请尝试重新操作。");
+						}
+					});
+					return false;
+					layer.close(index);
 				});
 
-
+			//退回审核单
 			}else if (obj.event === 'del'){
-
+				var onum = json.onum;
+				layer.confirm('确定退回该审查单么？', function(index){
+					$.ajax({
+						type:'POST',
+						url:"/financial/howAudit",
+						data:{onum:onum,flag:"back"},
+						success:function(data){
+							if (data == "1"){
+								layer.alert("已退回！");
+							}else if (data == "0"){
+								layer.alert("审核失败！");
+							}else if (data == "-1"){
+								layer.alert("审核出错！");
+							}else if (data == "-2"){
+								layer.alert("插入出错！");
+							}
+						},
+						error:function() {
+							layer.alert("退回失败!请尝试重新退回。");
+						}
+					});
+					return false;
+					layer.close(index);
+				});
 			}
 		});
 
@@ -308,7 +314,7 @@
 			,url: '/financial/aduitTab'
 			,cols: [[
 				{checkbox: true, fixed: true}
-				,{field:'onum', title: '审核单单号', width:150, sort: true, fixed: true}
+				,{field:'onum', title: '审核单单号', width:160, sort: true, fixed: true}
 				,{field:'oname', title: '审核单名', width:120}
 				,{field:'mnum', title: '提交者工号', width:150}
 				,{field:'status', title: '通过状态', width:120, sort: true}
@@ -324,7 +330,6 @@
 					}
 				}
 
-				console.log(json);
 				return json;
 			}
 			,id: 'auditing-load'
@@ -349,10 +354,50 @@
 				// ,{field:'date', title: '上次发放时间', width:180}
 				,{fixed:'right', title: '操作',toolbar: '#barDemo'}
 			]]
-			,id: 'testReload'
+			,id: 'test'
 			,page: true
 			// ,height: 310
 		});
+		var $ = layui.$, active = {
+
+			reload: function(){
+				var demoReload = $('#demoReload').val();
+				if (demoReload != ""){
+					//执行重载
+					table.reload('test', {
+						url:"/stuff/getStuff",
+						page: {
+							curr: 1 //重新从第 1 页开始
+						}
+						,where: {
+							info:demoReload
+
+						}
+
+					}, 'data');
+				}else {
+					//执行重载
+					table.reload('test', {
+						page: {
+							curr: 1 //重新从第 1 页开始
+						}
+						,where: {
+							info:"all"
+
+						}
+						,url:'/stuff/getStuff'
+					}, 'data');
+				}
+
+
+			}
+		};
+
+		$('.demoTable .layui-btn').on('click', function(){
+			var type = $(this).data('type');
+			active[type] ? active[type].call(this) : '';
+		});
+
 		//监听toolbar工具条
 		table.on('tool(test)', function(obj){
 			var data = obj.data;
@@ -426,8 +471,6 @@
 					}
 				});
 
-
-
 			}else if (obj.event === 'detail') {
 				var unum = json.unum;
 				var uname = json.uname;
@@ -436,9 +479,9 @@
 
 				layer.open({
 					type: 1,
-					title: uname + '的缺勤详情', //不显示标题栏
+					title: uname + '的工资详情', //不显示标题栏
 					shadeClose:true,
-					area: '500px;',
+					area: '800px;',
 					shade: 0.8,
 					id: 'LAY_layuipro', //设定一个id，防止重复弹出
 					btnAlign: 'c',
@@ -446,57 +489,126 @@
 					// offset: 'b',
 					moveType: 1, //拖拽模式，0或者1,
 					content:                   '<div style="padding: 10px; line-height: 22px; background-color: #f2f2f2; color: #fff; font-weight: 300;">' +
-							'                    <table class="layui-hide" id="AbsUTab" lay-filter="AbsUTab"></table>' +
+							'                    <table class="layui-hide" id="salary" lay-filter="salary"></table>' +
 							'                    </div>'
 					,
 					success: function () {
 
 						table.render({
-							elem: '#AbsUTab'
-							, url: '/stuff/queryAbsByNum'
-							,where:{
-								unum:unum
-							}
-							, cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
-							, cols: [[
-								{field: 'unum', width: '40%', title: 'ID'}
-								, {field: 'uname', width: '20%', title: '姓名'}
-								, {field: 'date', width: '40%', title: '缺勤日期', sort: true}
+							elem: '#salary'
+							,url:'/Info/getUMWage'
+							,title: '用户数据表'
+							,page:true
+							,limit: 5
+							,cols: [[
+								{type: 'checkbox', fixed: 'left'}
+								,{field:'unum', title:'员工号', width:120, fixed: 'left', unresize: true, sort: true}
+								,{field:'uname', title:'员工名', width:100, edit: 'text'}
+								,{field:'basic', title:'基本工资', width:120, edit: 'text',sort: true }
+								,{field:'overtime', title:'加班工资', width:120 ,sort: true}
+								,{field:'bonus', title:'奖金', width:80, sort: true}
+								,{field:'extra', title:'补贴', width:80,sort: true}
+								,{field:'absence', title:'缺勤次数', width:110, sort: true}
+								,{field:'insurance', title:'五险一金', width:110, sort: true}
+								,{field:'tax', title:'个人所得税', width:130, sort: true}
+								,{field:'all', title:'应得工资', width:120,sort: true}
+								,{field:'infact', title:'实得工资', width:120,sort: true}
+								,{field:'month', fixed: 'right', title:'日期', width:120,sort: true}
 							]]
-							, page: true
-							, limit: 5
+
 						});
+
 
 					}
 				});
 
-
+			//福利发放
 			}else if (obj.event === 'ext'){
+				var util = layui.util;
+				layer.open({
+					type: 1
+					,title: '福利发放'
+					,closeBtn: false
+					,area: '300px;'
+					,shade: 0.8
+					,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+					,btn: ['登记', '取消']
+					,btnAlign: 'c'
+					// ,offset:'b'
+					,moveType: 1 //拖拽模式，0或者1
+					,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49;  font-weight: 300;">' +
+							'<form class="layui-form" id="change_password">' +
+							'<input type="text" name="unum" id="fnum" lay-verify="num" disabled = "disabled" autocomplete="off" placeholder="工号" class="layui-input"  style="color: #000000"><br>'+
+							'<input type="text" name="uname" id="fname" lay-verify="name" disabled = "disabled" autocomplete="off" placeholder="姓名" class="layui-input"  style="color: #000000"><br>'+
+							// '<div class="layui-input-inline">' +
+							'<select id="type" name="type" ><br>' +
+							'<option value="1" >请选择福利类型</option><br>' +
+							'<option value="overtime" selected="" >加班费</option><br>' +
+							'<option value="bonus">奖金</option><br>' +
+							'<option value="eating">餐补</option><br>' +
+							'<option value="traffic">交通补贴</option><br>' +
+							'<option value="communication">通讯补贴</option><br>' +
+							'<option value="performance">绩效</option><br>' +
+							'</select><br>' +
+							// '    </div>'+
+							'<input type="text" name="basic" id="basic" lay-verify="basic"  autocomplete="off" placeholder="金额" class="layui-input"  style="color: #000000"><br>'+
+							'<input type="text" name="month" id="month" lay-verify="date" autocomplete="off" placeholder="日期选取" class="layui-input"  style="color: #000000"><br>' +
+							'<input type="text" name="remark" id="remark" lay-verify="remark" autocomplete="off" placeholder="备注" class="layui-input"  style="color: #000000"><br>' +
+							'<br><br>'+
+							'</form>' +
+							'</div>'
+					,success: function(layero) {
+						layui.use('form', function(){
+							var form = layui.form;
+							form.render();
+						});
+
+						var fnum = json.unum;
+						var fname = json.uname;
+						$("#fnum").val(fnum);
+						$("#fname").val(fname);
+						layui.use('laydate', function () {
+							var laydate = layui.laydate;
+
+							//常规用法
+							laydate.render({
+								elem: '#month'
+							});
+						});
+						var btn = layero.find('.layui-layer-btn');
+						btn.find('.layui-layer-btn0').click(function () {
+
+							var sum = util.escape($("#basic").val());
+							var type = util.escape($("#type").val());
+							var month = util.escape($("#month").val());
+							var oname = util.escape($("#remark").val());
+
+
+							$.ajax({
+								type: 'POST',
+								url: "/financial/extra",
+								data: {unum: fnum, sum: sum, type: type, date: month,oname:oname},
+								success: function (data) {
+									if (data == "-1") {
+										layer.alert("审核出错！请重新尝试。");
+									} else if (data == "-2") {
+										layer.alert("添加出错！请重新尝试。");
+									} else if (data == "1") {
+										layer.alert("工资信息添加成功");
+									}
+								},
+								error: function () {
+									layer.alert("添加失败!请尝试重新添加。");
+								}
+							})
+
+						})
+					}
+				});
 
 			}
 		});
-		var $ = layui.$, active = {
-			reload: function(){
-				var demoReload = $('#demoReload');
 
-				//执行重载
-				table.reload('testReload', {
-					page: {
-						curr: 1 //重新从第 1 页开始
-					}
-					,where: {
-						key: {
-							id: demoReload.val()
-						}
-					}
-				}, 'data');
-			}
-		};
-
-		$('.demoTable .layui-btn').on('click', function(){
-			var type = $(this).data('type');
-			active[type] ? active[type].call(this) : '';
-		});
 
 		table.on('toolbar(test)', function(obj){
 			var checkStatus = table.checkStatus(obj.config.id);
