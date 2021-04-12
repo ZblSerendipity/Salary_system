@@ -34,16 +34,11 @@ public class Login {
     void modpwd(HttpServletResponse response, HttpSession session,
                 @RequestParam(value = "password_old")String password_old,@RequestParam(value = "password_new")String password_new)throws Exception{
         //        String unum = session.getAttribute("unum").toString();
-
-
         if (password_old.equals(maService.queryUser("2017110457").getUpassword())){
             Integer content = maService.updpsw(password_new,"2017110457");
             response.setContentType("text/json;charset=utf-8");
             response.getWriter().write(content != 0?"1":"0");
 
         }
-
-
-
     }
 }

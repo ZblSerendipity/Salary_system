@@ -75,7 +75,7 @@ public class StuffInfo {
                                                             @RequestParam(value = "pid")String pid,@RequestParam(value = "bankid")String bankid,
                                                             @RequestParam(value = "gender")String gender,@RequestParam(value = "dnum")String dnum)throws Exception{
 
-        //        String unum = session.getAttribute("unum").toString();
+
         Integer flag = stuffService.addNewStuff(unum,uname,Integer.parseInt(age),position,bankid,pid,dnum,gender);
         response.setContentType("text/json;charset=utf-8");
         response.getWriter().write(flag != 0?"1":"0");

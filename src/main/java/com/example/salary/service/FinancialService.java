@@ -111,6 +111,10 @@ public class FinancialService {
     public Integer updExtraWage(String type,Double sum,String unum,Date date){
         return financialMapper.updExtraWage(type, sum, unum, date);
     };
+    //查询上月的工资发放情况
+    public List<Salary> queryLastMonth(Date date){
+        return financialMapper.queryLastMonth(date);
+    };
     //更新orders
 //    public Integer updOrders(String status,String onum){
 //        return financialMapper.updOrders(status, onum);

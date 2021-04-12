@@ -2,7 +2,9 @@ package com.example.salary.web;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.salary.domain.Extra;
+import com.example.salary.domain.Salary;
 import com.example.salary.service.FinancialService;
+import com.example.salary.service.MaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +21,7 @@ import java.util.List;
 public class FinancialInfo {
     @Autowired
     FinancialService financialService;
+
     //插入工资信息并生成审核单
     @RequestMapping(value = "/insertStuff")void insertStuff(HttpServletResponse response, HttpSession session,
                                                             @RequestParam(value = "unum")String unum,
@@ -57,6 +60,35 @@ public class FinancialInfo {
         }else if (audit == 0 && content == 0){
             response.getWriter().write(  "-2");
         }
+
+    }
+    //按上月发放工资
+    @RequestMapping(value = "/lastMonthWages") void lastMonthWages(HttpServletResponse response)throws Exception{
+
+        long now = System.currentTimeMillis();
+        java.sql.Date time = new java.sql.Date(now);
+        //还应转换成每月1日
+        List<Salary> list = financialService.queryLastMonth(time);
+        for (int i = 0; i < list.size(); i++){
+            //月份加一
+        }
+        int r1=(int)(Math.random()*(10));//产生2个0-9的随机数
+        int r2=(int)(Math.random()*(10));
+        String onum ="B"+String.valueOf(r1)+String.valueOf(r2)+String.valueOf(now);// 审查单号
+        for (int i = 0; i < list.size(); i++){
+            Integer absence = financialService.queryAbsDays(list.get(i).getUnum(), list.get(i).getMonth());
+            if (absence != 0 ){
+
+                financialService.insertStuffWage(list.get(i).getUnum(), list.get(i).getMonth(),list.get(i).getBasic(),list.get(i).getInsurance(),absence,onum);
+
+            }else {
+                financialService.insertStuffWage(list.get(i).getUnum(), list.get(i).getMonth(),list.get(i).getBasic(),list.get(i).getInsurance(),0,onum);
+            }
+            financialService.insertAudit(onum,"按上月工资发放","2017110445",time,"未校验");
+            financialService.insertExtWage(list.get(i).getUnum(), list.get(i).getMonth(),0.00,0.00,0.00,0.00,0.00,0.00);
+        }
+        response.setContentType("text/json;charset=utf-8");
+        response.getWriter().write(  "1");
 
     }
     //插入补贴信息并生成审核单

@@ -27,7 +27,6 @@ public class BoardInfo {
 //        String content = boardService.queryAllBoards();
         JSONObject jsonObject = new JSONObject();
         response.setContentType("text/json;charset=utf-8");
-//        response.getWriter().write(content == null ? "0": content);
         jsonObject.put("code",0 );
         jsonObject.put("msg","");
         Integer rows = boardService.queryAllRows();
