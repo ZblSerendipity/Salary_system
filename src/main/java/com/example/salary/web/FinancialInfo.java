@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -65,32 +68,58 @@ public class FinancialInfo {
     //按上月发放工资
     @RequestMapping(value = "/lastMonthWages") void lastMonthWages(HttpServletResponse response)throws Exception{
 
-        long now = System.currentTimeMillis();
-        java.sql.Date time = new java.sql.Date(now);
-        //还应转换成每月1日
-        List<Salary> list = financialService.queryLastMonth(time);
-        for (int i = 0; i < list.size(); i++){
-            //月份加一
-        }
-        int r1=(int)(Math.random()*(10));//产生2个0-9的随机数
-        int r2=(int)(Math.random()*(10));
-        String onum ="B"+String.valueOf(r1)+String.valueOf(r2)+String.valueOf(now);// 审查单号
-        for (int i = 0; i < list.size(); i++){
-            Integer absence = financialService.queryAbsDays(list.get(i).getUnum(), list.get(i).getMonth());
-            if (absence != 0 ){
-
-                financialService.insertStuffWage(list.get(i).getUnum(), list.get(i).getMonth(),list.get(i).getBasic(),list.get(i).getInsurance(),absence,onum);
-
-            }else {
-                financialService.insertStuffWage(list.get(i).getUnum(), list.get(i).getMonth(),list.get(i).getBasic(),list.get(i).getInsurance(),0,onum);
-            }
-            financialService.insertAudit(onum,"按上月工资发放","2017110445",time,"未校验");
-            financialService.insertExtWage(list.get(i).getUnum(), list.get(i).getMonth(),0.00,0.00,0.00,0.00,0.00,0.00);
-        }
         response.setContentType("text/json;charset=utf-8");
-        response.getWriter().write(  "1");
+        long now = System.currentTimeMillis();
+        Date date = new Date();
+        java.sql.Date start = new java.sql.Date(now);
+        java.sql.Date finish = start;
 
-    }
+        //判断当前时间和获取时间是否相差一个月，满足条件则发放，不满足则不发放
+        List<Salary> list = financialService.queryLastMonth(start);
+        start = list.get(0).getMonth();
+        Calendar sta = Calendar.getInstance();
+        Calendar fin = Calendar.getInstance();
+        sta.setTime(start);
+        fin.setTime(finish);
+//
+
+
+
+        LocalDate startdate = LocalDate.of(sta.YEAR,sta.MONTH,sta.DAY_OF_MONTH);
+        LocalDate finaltdate = LocalDate.of(fin.YEAR,fin.MONTH,fin.DAY_OF_MONTH);
+        Period period = Period.between(startdate,finaltdate);
+        if (period.getDays() <30){
+            response.getWriter().write(  "-1");
+
+        }else {
+            sta.add(sta.MONTH,1);
+            date = sta.getTime();
+            start = new java.sql.Date(date.getTime());
+            System.out.println(start);
+
+            for (int i = 0; i < list.size(); i++){
+                list.get(i).setMonth(start);
+            }
+            int r1=(int)(Math.random()*(10));//产生2个0-9的随机数
+            int r2=(int)(Math.random()*(10));
+            String onum ="B"+String.valueOf(r1)+String.valueOf(r2)+String.valueOf(now);// 审查单号
+            for (int i = 0; i < list.size(); i++){
+                Integer absence = financialService.queryAbsDays(list.get(i).getUnum(), list.get(i).getMonth());
+                if (absence != 0 ){
+
+                    financialService.insertStuffWage(list.get(i).getUnum(), list.get(i).getMonth(),list.get(i).getBasic(),list.get(i).getInsurance(),absence,onum);
+
+                }else {
+                    financialService.insertStuffWage(list.get(i).getUnum(), list.get(i).getMonth(),list.get(i).getBasic(),list.get(i).getInsurance(),0,onum);
+                }
+                financialService.insertAudit(onum,"按上月工资发放","2017110445",finish,"未校验");
+                financialService.insertExtWage(list.get(i).getUnum(), list.get(i).getMonth(),0.00,0.00,0.00,0.00,0.00,0.00);
+            }
+            response.setContentType("text/json;charset=utf-8");
+            response.getWriter().write(  "1");
+        }
+
+    };
     //插入补贴信息并生成审核单
     @RequestMapping(value = "/extra")void insertExtra(HttpServletResponse response,@RequestParam(value = "unum")String unum,
                                                       @RequestParam(value = "date")String date,@RequestParam(value = "sum")String sum,
