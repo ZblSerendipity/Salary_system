@@ -20,7 +20,7 @@
         <div class="layui-logo ">企业工资管理系统</div>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item" lay-unselect="">
-                <a href="javascript:;"><img src="//t.cn/RCzsdCq" class="layui-nav-img"><span id="name">xingming</span></a>
+                <a href="javascript:;"><img src="/Info/person" class="layui-nav-img"><span id="name">xingming</span></a>
                 <dl class="layui-nav-child">
 					<dd><a data-method="notice" id="passwd">&nbsp;修改密码</a></dd>
 
@@ -71,7 +71,7 @@
 	    		<div class="layui-card-body">
 	    			<div class="layui-upload">
 					  <div class="layui-upload-list">
-					    <img src="//t.cn/RCzsdCq" class="layui-upload-img" id="image-img" style="height: 100px; width: 100px; border-radius: 50px;">
+					    <img src="/Info/person" class="layui-upload-img" id="image-img" style="height: 100px; width: 100px; border-radius: 50px;">
 					    <p id="demoText"></p>
 					    <button type="button" class="layui-btn" id="image-btn">修改头像</button>
 					  </div>
@@ -240,5 +240,37 @@
 			}
 		})
 	}
+
+	layui.use('upload', function(){
+		var $ = layui.jquery
+				,upload = layui.upload;
+
+		//普通图片上传
+		var uploadInst = upload.render({
+			elem: '#image-btn'
+			,url: '/Info/updateImage' //改成您自己的上传接口
+			,before: function(obj){
+				//预读本地文件示例，不支持ie8
+				obj.preview(function(index, file, result){
+					$('#image-img').attr('src', result); //图片链接（base64）
+				});
+			}
+			,done: function(res){
+				//如果上传失败
+				if(res.code > 0){
+					return layer.msg('上传失败');
+				}
+				//上传成功
+			}
+			,error: function(){
+				//演示失败状态，并实现重传
+				var demoText = $('#demoText');
+				demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+				demoText.find('.demo-reload').on('click', function(){
+					uploadInst.upload();
+				});
+			}
+		});
+	});
 </script>
 </html>

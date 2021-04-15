@@ -90,8 +90,8 @@ public interface FinancialMapper {
             "where unum = #{unum} and TIMESTAMPDIFF(Day,extrawage.date,#{date}) <= 31 and TIMESTAMPDIFF(Day,extrawage.date,#{date}) <= 0")
     Integer updExtraWage(String type,Double sum,String unum,Date date);
     //查询上月的工资发放情况
-    @Select("select * from stuffwage" +
-            "where TIMESTAMPDIFF(Day,stuffwage.month,#{date}) <= 0 and TIMESTAMPDIFF(Day,stuffwage.month,#{date}) >= -31")
+    @Select("select * from stuffwage " +
+            "where TIMESTAMPDIFF(Day,stuffwage.month,#{date}) >= 0 and TIMESTAMPDIFF(Day,stuffwage.month,#{date}) <= 31")
     List<Salary> queryLastMonth(Date date);
     //更新orders
 //    @Update("update orders " +

@@ -20,7 +20,7 @@
         <div class="layui-logo ">企业工资管理系统</div>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item" lay-unselect="">
-                <a href="javascript:;"><img src="//t.cn/RCzsdCq" class="layui-nav-img"><span id="xm">xingming</span></a>
+                <a href="javascript:;"><img src="/Info/person" class="layui-nav-img"><span id="xm">xingming</span></a>
                 <dl class="layui-nav-child">
 					<dd><a data-method="notice" id="passwd">&nbsp;修改密码</a></dd>
 
@@ -83,13 +83,13 @@
 
 						<div style="padding: 10px;">
 
-							<script type="text/html" id="toolbarDemo">
+							<table class="layui-hide" id="test" lay-filter="test"></table>
+							<script type="text/html" id="lastDemo">
 							<div class="layui-btn-group demoTable">
-								<button class="layui-btn layui-btn-sm" data-type="getCheckData">按上月发放工资</button>
-								<button class="layui-btn layui-btn-sm" data-type="getCheckLength">验证是否全选</button>
+								<button class="layui-btn layui-btn-sm" lay-event="lastMonth">按上月发放工资</button>
 							</div>
 							</script>
-							<table class="layui-hide" id="test" lay-filter="test"></table>
+
 							<script type="text/html" id="barDemo" >
 								<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">工资查询</a>
 								<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="add">工资发放</a>
@@ -341,7 +341,7 @@
 		table.render({
 			elem: '#test'
 			,url: '/stuff/getAll'
-			,toolbar: '#toolbarDemo'
+			,toolbar: '#lastDemo'
 			,cols: [[
 				{checkbox: true, fixed: true}
 				,{field:'unum', title: 'ID', width:120, sort: true, fixed: true}
@@ -354,9 +354,41 @@
 				// ,{field:'date', title: '上次发放时间', width:180}
 				,{fixed:'right', title: '操作',toolbar: '#barDemo'}
 			]]
-			,id: 'test'
+			// ,id: 'test'
 			,page: true
 			// ,height: 310
+		});
+
+		table.on('toolbar(test)', function(obj){
+			// var checkStatus = table.checkStatus(obj.config.id);
+			switch(obj.event){
+				case 'lastMonth':
+					layer.confirm('确定按上月工资发放情况发放员工工资吗？', function(index){
+						$.ajax({
+							type:'POST',
+							url:"/financial/lastMonthWages",
+							// data:{onum:onum,flag:"back"},
+							success:function(data){
+								if (data == "1"){
+									layer.alert("发放成功！");
+								}else if (data == "-1"){
+									layer.alert("发放出错！");
+								}
+							},
+							error:function() {
+								layer.alert("发放失败!请尝试重新操作。");
+							}
+						});
+						return false;
+						layer.close(index);
+					});
+					break;
+
+					//自定义头工具栏右侧图标 - 提示
+				case 'LAYTABLE_TIPS':
+					layer.alert('这是工具栏右侧自定义的一个图标按钮');
+					break;
+			};
 		});
 		var $ = layui.$, active = {
 
@@ -610,27 +642,6 @@
 		});
 
 
-		table.on('toolbar(test)', function(obj){
-			var checkStatus = table.checkStatus(obj.config.id);
-			switch(obj.event){
-				case 'getCheckData':
-					var data = checkStatus.data;
-					layer.alert(JSON.stringify(data));
-					break;
-				case 'getCheckLength':
-					var data = checkStatus.data;
-					layer.msg('选中了：'+ data.length + ' 个');
-					break;
-				case 'isAll':
-					layer.msg(checkStatus.isAll ? '全选': '未全选');
-					break;
-
-					//自定义头工具栏右侧图标 - 提示
-				case 'LAYTABLE_TIPS':
-					layer.alert('这是工具栏右侧自定义的一个图标按钮');
-					break;
-			};
-		});
 	});
 
 

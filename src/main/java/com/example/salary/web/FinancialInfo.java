@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -72,30 +73,34 @@ public class FinancialInfo {
         long now = System.currentTimeMillis();
         Date date = new Date();
         java.sql.Date start = new java.sql.Date(now);
-        java.sql.Date finish = start;
+        java.sql.Date finish = new java.sql.Date(now);
 
+
+        System.out.println(finish);
         //判断当前时间和获取时间是否相差一个月，满足条件则发放，不满足则不发放
         List<Salary> list = financialService.queryLastMonth(start);
         start = list.get(0).getMonth();
         Calendar sta = Calendar.getInstance();
         Calendar fin = Calendar.getInstance();
+
         sta.setTime(start);
-        fin.setTime(finish);
-//
+        fin.setTime(finish); 
 
+        LocalDate startdate = LocalDate.of(sta.get(Calendar.YEAR),sta.get(Calendar.MONTH)+1,sta.get(Calendar.DATE));
+        LocalDate finaltdate = LocalDate.of(fin.get(Calendar.YEAR),fin.get(Calendar.MONTH)+1,fin.get(Calendar.DATE));
 
+        //查询日期与数据库工资表最新发放时间间隔
+        long daysDiff = ChronoUnit.DAYS.between(startdate,finaltdate);
 
-        LocalDate startdate = LocalDate.of(sta.YEAR,sta.MONTH,sta.DAY_OF_MONTH);
-        LocalDate finaltdate = LocalDate.of(fin.YEAR,fin.MONTH,fin.DAY_OF_MONTH);
-        Period period = Period.between(startdate,finaltdate);
-        if (period.getDays() <30){
+        if (daysDiff <20){
             response.getWriter().write(  "-1");
 
-        }else {
+        }
+        else {
             sta.add(sta.MONTH,1);
             date = sta.getTime();
             start = new java.sql.Date(date.getTime());
-            System.out.println(start);
+
 
             for (int i = 0; i < list.size(); i++){
                 list.get(i).setMonth(start);
@@ -112,9 +117,10 @@ public class FinancialInfo {
                 }else {
                     financialService.insertStuffWage(list.get(i).getUnum(), list.get(i).getMonth(),list.get(i).getBasic(),list.get(i).getInsurance(),0,onum);
                 }
-                financialService.insertAudit(onum,"按上月工资发放","2017110445",finish,"未校验");
+
                 financialService.insertExtWage(list.get(i).getUnum(), list.get(i).getMonth(),0.00,0.00,0.00,0.00,0.00,0.00);
             }
+            financialService.insertAudit(onum,"按上月工资发放","2017110445",finish,"未校验");
             response.setContentType("text/json;charset=utf-8");
             response.getWriter().write(  "1");
         }

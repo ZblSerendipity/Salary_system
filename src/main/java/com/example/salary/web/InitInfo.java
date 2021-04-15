@@ -48,11 +48,11 @@ public class InitInfo {
     //初始化头像
     @RequestMapping(value = "/person")void personImage(HttpSession session,HttpServletResponse response) throws IOException {
         String value = null;
-        if (session != null) {
-            value = session.getAttribute("stu_num").toString();
-        } else {
+//        if (session != null) {
+//            value = session.getAttribute("stu_num").toString();
+//        } else {
             value = "default";
-        }
+//        }
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(new File("images/person/" + (value == null ?"default":value) + ".jpg"));
@@ -78,7 +78,8 @@ public class InitInfo {
             jsonObject.put("msg","不能上传空文件！");
             return jsonObject.toString();
         }
-                String unum = session.getAttribute("unum").toString();
+//                String unum = session.getAttribute("unum").toString();
+        String unum = "2017110457";
         if (unum == null){
             jsonObject.put("code",1);
             jsonObject.put("msg","上传失败！");
