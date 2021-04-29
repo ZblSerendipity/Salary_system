@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="UTF-8">
     <title>工资管理主页</title>
@@ -30,7 +32,7 @@
             <!--<li class="layui-nav-item">
                   用户欢迎您！
             </li>-->
-            <li class="layui-nav-item"><a href="#" style="text-decoration:none">退出登录</a></li>
+            <li class="layui-nav-item"><a href="http://localhost:8080/html/onload.html" style="text-decoration:none">退出登录</a></li>
         </ul>
 
     </div>
@@ -49,20 +51,27 @@
                 <a  class="layui-this" href="http://localhost:8080/html/salaryPage.html">我的工资信息</a>
             </li>
             <li class="layui-nav-item">
-                <a  href="http://localhost:8080/html/boardManage.html">公告管理</a>
+                <a href="http://localhost:8080/html/boardPage.html">我的公告</a>
+                <shiro:hasPermission name="sys:rs:board">
                 <dl class="layui-nav-child">
-                    <dd><a href="http://localhost:8080/html/boardPage.html">我的公告</a></dd>
+                    <dd> <a  href="http://localhost:8080/html/boardManage.html">公告管理</a></dd>
                 </dl>
+                </shiro:hasPermission>
             </li>
             <!--管理员工工资，员工信息-->
+            <shiro:hasPermission name="sys:rs:stuff">
             <li class="layui-nav-item">
                 <a href="http://localhost:8080/html/stuffManagePage.html">员工管理</a>
             </li>
+            </shiro:hasPermission>
             <!--			财务管理-->
+            <shiro:hasPermission name="sys:cw:wage">
             <li class="layui-nav-item"><a href="http://localhost:8080/html/salaryManagePage.html">财务管理</a></li>
-
+            </shiro:hasPermission>
             <!--角色权限管理-->
+            <shiro:hasPermission name="sys:admin">
             <li class="layui-nav-item"><a href="http://localhost:8080/html/powerPage.html">角色管理</a></li>
+            </shiro:hasPermission>
         </ul>
     </div>
 
@@ -159,7 +168,8 @@
     ,title: '用户数据表'
       ,page:true
       ,limit: 10
-    ,cols: [[
+    ,cols: [
+        [
       {type: 'checkbox', fixed: 'left'}
       ,{field:'unum', title:'员工号', width:120, fixed: 'left', unresize: true, sort: true}
       ,{field:'uname', title:'员工名', width:100, edit: 'text'}
@@ -173,7 +183,8 @@
       ,{field:'all', title:'应得工资', width:120,sort: true}
       ,{field:'infact', title:'实得工资', width:120,sort: true}
       ,{field:'month', fixed: 'right', title:'日期', width:120,sort: true}
-    ]]
+    ]
+      ]
 
   });
 
@@ -190,7 +201,8 @@
             ,title: '用户数据表'
             ,page:true
             ,limit: 10
-            ,cols: [[
+            ,cols: [
+                [
                 {type: 'checkbox', fixed: 'left'}
                 ,{field:'unum', title:'员工号', width:150, fixed: 'left', unresize: true, sort: true}
                 ,{field:'uname', title:'员工名', width:100, edit: 'text'}
@@ -202,7 +214,8 @@
                 ,{field:'communication', title:'通讯补贴', width:120, sort: true}
                 ,{field:'performance', title:'绩效', width:130, sort: true}
                 ,{field:'month', fixed: 'right', title:'汇总日期', width:120,sort: true}
-            ]]
+            ]
+            ]
         });
   //头工具栏事件
   table.on('toolbar(test)', function(obj){

@@ -11,3 +11,12 @@ spring:
 mybatis:
   mapper-locations: classpath:mappers/*Mapper.xml
   type-aliases-package: com.example.salary.domain
+
+
+#thymeleaf:
+#  prefix: classpath:/html/
+#  suffix: .html
+#  mode: HTML5
+#  encoding: utf-8
+#  cache: false
+#  content-type: text/html

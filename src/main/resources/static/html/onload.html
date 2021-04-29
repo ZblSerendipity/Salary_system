@@ -1,7 +1,9 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 
 <head>
     <title>企业工资管理系统 </title>
@@ -37,17 +39,17 @@
             </div>
             <div class="txt-left-side">
                 <h2> 登录 </h2>
-                <form action="/user/login" method="post" enctype="application/x-www-form-urlencoded" onsubmit="return xss()">
+                <form action="/login/getps" method="post" enctype="application/x-www-form-urlencoded" onsubmit="return xss()">
                     <div class="form-left-to-w3l">
                         <span class="fa fa-user-o" aria-hidden="true"></span>
-                        <input type="text" name="username" placeholder=" 用户名" required="" lay-verify="required|number|username" id="username">
+                        <input type="text" name="unum" placeholder=" 用户名" required="" lay-verify="required|number|username" id="username">
 
                         <div class="clear"></div>
                     </div>
                     <div class="form-left-to-w3l ">
 
                         <span class="fa fa-lock" aria-hidden="true"></span>
-                        <input type="password" name="password" placeholder="密码" required="" lay-verify="required|password" id="password">
+                        <input type="password" name="upassword" placeholder="密码" required="" lay-verify="required|password" id="password">
                         <div class="clear"></div>
                     </div>
 

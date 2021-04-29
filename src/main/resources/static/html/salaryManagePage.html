@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="UTF-8">
     <title>工资管理主页</title>
@@ -29,7 +31,7 @@
             <!--<li class="layui-nav-item">
                   用户欢迎您！
             </li>-->
-            <li class="layui-nav-item"><a href="#" style="text-decoration:none">退出登录</a></li>
+            <li class="layui-nav-item"><a href="http://localhost:8080/html/onload.html" style="text-decoration:none">退出登录</a></li>
         </ul>
 
     </div>
@@ -48,20 +50,27 @@
 				<a href="http://localhost:8080/html/salaryPage.html">我的工资信息</a>
             </li>
             <li class="layui-nav-item">
-				<a  href="http://localhost:8080/html/boardManage.html">公告管理</a>
+				<a href="http://localhost:8080/html/boardPage.html">我的公告</a>
+				<shiro:hasPermission name="sys:rs:board">
 				<dl class="layui-nav-child">
-					<dd><a href="http://localhost:8080/html/boardPage.html">我的公告</a></dd>
+					<dd><a  href="http://localhost:8080/html/boardManage.html">公告管理</a></dd>
 				</dl>
+				</shiro:hasPermission>
             </li>
 			<!--管理员工工资，员工信息-->
+			<shiro:hasPermission name="sys:rs:stuff">
 			<li class="layui-nav-item">
 				<a href="http://localhost:8080/html/stuffManagePage.html">员工管理</a>
 			</li>
+			</shiro:hasPermission>
 			<!--			财务管理-->
+			<shiro:hasPermission name="sys:cw:wage">
 			<li class="layui-nav-item"><a class="layui-this" href="http://localhost:8080/html/salaryManagePage.html">财务管理</a></li>
-
+			</shiro:hasPermission>
             <!--角色权限管理-->
+			<shiro:hasPermission name="sys:admin">
             <li class="layui-nav-item"><a href="http://localhost:8080/html/powerPage.html">角色管理</a></li>
+			</shiro:hasPermission>
         </ul>
     </div>
 
@@ -71,7 +80,9 @@
 			<div class="layui-tab layui-tab-card" >
 				<ul class="layui-tab-title">
 					<li class="layui-this">财务发放</li>
+					<shiro:hasPermission name="sys:admin">
 					<li>财务报表审核</li>
+					</shiro:hasPermission>
 
 
 				</ul>
@@ -154,7 +165,8 @@
 		table.render({
 			elem: '#audit_tab'
 			,url: '/financial/aduitTab'
-			,cols: [[
+			,cols: [
+					[
 				{checkbox: true, fixed: true}
 				,{field:'onum', title: '审核单号', width:180, sort: true, fixed: true}
 				,{field:'mnum', title: '员工号', sort: true, width:180}
@@ -162,7 +174,8 @@
 				,{field:'subtime', title: '时间', width:120,sort: true}
 				,{field:'status', title: '审核状态', width:120}
 				,{fixed:'right', title: '操作',toolbar: '#auditDemo'}
-			]]
+			]
+			]
 			,id: 'auditReload'
 			,page: true
 			,height: 310
@@ -203,13 +216,15 @@
 								,where:{
 									onum:onum
 								}
-								, cols: [[
+								, cols: [
+										[
 									{field: 'unum', width: '20%', title: 'ID', sort: true}
 									, {field: 'uname', width: '10%', title: '姓名'}
 									, {field: 'basic', width: '20%', title: '基础工资', sort: true}
 									, {field: 'basic', width: '20%', title: '五险一金', sort: true}
 									, {field: 'month', width: '20%', title: '发放日期'}
-								]]
+								]
+								]
 								, page: true
 								, limit: 5
 							});
@@ -237,13 +252,15 @@
 								,where:{
 									onum:onum
 								}
-								, cols: [[
+								, cols: [
+										[
 									{field: 'unum', width: '20%', title: 'ID', sort: true}
 									, {field: 'uname', width: '15%', title: '姓名'}
 									, {field: 'type', width: '20%', title: '补贴类型', sort: true}
 									, {field: 'date', width: '20%', title: '发放日期'}
 									, {field: 'sum', width: '25%', title: '发放金额'}
-								]]
+								]
+								]
 								, page: true
 								, limit: 5
 							});
@@ -312,7 +329,8 @@
 		table.render({
 			elem: '#auditing-tab'
 			,url: '/financial/aduitTab'
-			,cols: [[
+			,cols: [
+					[
 				{checkbox: true, fixed: true}
 				,{field:'onum', title: '审核单单号', width:160, sort: true, fixed: true}
 				,{field:'oname', title: '审核单名', width:120}
@@ -321,7 +339,8 @@
 				,{field:'passnum', title: '通过者工号', width:160}
 				,{field:'time', title: '审核时间', sort: true}
 				// ,{fixed:'right', title: '操作',toolbar: '#barDemo'}
-			]]
+			]
+			]
 			,done:function (res) {
 				var json = eval(res);
 				for (var i = 0; i < json.length; i++){
@@ -342,7 +361,8 @@
 			elem: '#test'
 			,url: '/stuff/getAll'
 			,toolbar: '#lastDemo'
-			,cols: [[
+			,cols: [
+					[
 				{checkbox: true, fixed: true}
 				,{field:'unum', title: 'ID', width:120, sort: true, fixed: true}
 				,{field:'uname', title: '员工名', width:80}
@@ -353,7 +373,8 @@
 				,{field:'basic', title: '工资', sort: true, width:80}
 				// ,{field:'date', title: '上次发放时间', width:180}
 				,{fixed:'right', title: '操作',toolbar: '#barDemo'}
-			]]
+			]
+			]
 			// ,id: 'test'
 			,page: true
 			// ,height: 310
@@ -528,11 +549,15 @@
 
 						table.render({
 							elem: '#salary'
-							,url:'/Info/getUMWage'
+							,url:'/financial/getUMWage'
 							,title: '用户数据表'
+							,where:{
+								unum:unum
+							}
 							,page:true
 							,limit: 5
-							,cols: [[
+							,cols: [
+									[
 								{type: 'checkbox', fixed: 'left'}
 								,{field:'unum', title:'员工号', width:120, fixed: 'left', unresize: true, sort: true}
 								,{field:'uname', title:'员工名', width:100, edit: 'text'}
@@ -546,7 +571,8 @@
 								,{field:'all', title:'应得工资', width:120,sort: true}
 								,{field:'infact', title:'实得工资', width:120,sort: true}
 								,{field:'month', fixed: 'right', title:'日期', width:120,sort: true}
-							]]
+							]
+							]
 
 						});
 

@@ -26,9 +26,9 @@ public class InitInfo {
     //主页初始化用户信息
     @RequestMapping(value = "/getInfo")void getInfo(HttpServletResponse response, HttpSession session) throws Exception{
 
-//        String unum = session.getAttribute("unum").toString();
+        String unum = session.getAttribute("unum").toString();
 
-       String content = maService.getStuffInfo("2017110457");
+       String content = maService.getStuffInfo(unum);
        response.setContentType("text/json;charset=utf-8");
        response.getWriter().write(content == null?"":content);
 
@@ -38,9 +38,9 @@ public class InitInfo {
     @RequestMapping(value = "/updateInfo") void updateUInfo(HttpServletResponse response, HttpSession session,
                                                             @RequestParam(value = "uname")String uname,@RequestParam(value = "pid")String pid,
                                                             @RequestParam(value = "age")String age) throws Exception{
-        //        String unum = session.getAttribute("unum").toString();
+                String unum = session.getAttribute("unum").toString();
 
-       boolean content = maService.updateUInfo(uname,pid,"2017110457",Integer.parseInt(age));
+       boolean content = maService.updateUInfo(uname,pid,unum,Integer.parseInt(age));
         response.setContentType("text/json;charset=utf-8");
         response.getWriter().write(content == true? "1" : "0");
 
@@ -48,11 +48,11 @@ public class InitInfo {
     //初始化头像
     @RequestMapping(value = "/person")void personImage(HttpSession session,HttpServletResponse response) throws IOException {
         String value = null;
-//        if (session != null) {
-//            value = session.getAttribute("stu_num").toString();
-//        } else {
+        if (session != null) {
+            value = session.getAttribute("unum").toString();
+        } else {
             value = "default";
-//        }
+        }
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(new File("images/person/" + (value == null ?"default":value) + ".jpg"));
@@ -78,8 +78,8 @@ public class InitInfo {
             jsonObject.put("msg","不能上传空文件！");
             return jsonObject.toString();
         }
-//                String unum = session.getAttribute("unum").toString();
-        String unum = "2017110457";
+                String unum = session.getAttribute("unum").toString();
+//        String unum = "2017110457";
         if (unum == null){
             jsonObject.put("code",1);
             jsonObject.put("msg","上传失败！");
@@ -101,21 +101,21 @@ public class InitInfo {
     @RequestMapping(value = "/getUMWage") String getUMWage(HttpSession session,HttpServletResponse response,
                                                          @RequestParam(value = "limit")String size,@RequestParam(value = "page")String page) throws  Exception{
 
-        //        String unum = session.getAttribute("unum").toString();
+                String unum = session.getAttribute("unum").toString();
 
         JSONObject jsonObject = new JSONObject();
         response.setContentType("text/json;charset=utf-8");
-        Integer row = maService.getSize("2017110457");
+        Integer row = maService.getSize(unum);
         jsonObject.put("code",0 );
         jsonObject.put("msg","");
         jsonObject.put("count",row);
-        jsonObject.put("data", maService.getMonthWage("2017110457",Integer.parseInt(page),Integer.parseInt(size)));
+        jsonObject.put("data", maService.getMonthWage(unum,Integer.parseInt(page),Integer.parseInt(size)));
         return jsonObject.toString();
 
     }
     @RequestMapping(value = "/chart")void getWage(HttpSession session,HttpServletResponse response)throws Exception{
-        //        String unum = session.getAttribute("unum").toString();
+                String unum = session.getAttribute("unum").toString();
         response.setContentType("text/json;charset=utf-8");
-        response.getWriter().write(JSON.toJSONString(maService.getYWage("2017110457")));
+        response.getWriter().write(JSON.toJSONString(maService.getYWage(unum)));
     }
 }

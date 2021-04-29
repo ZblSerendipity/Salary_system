@@ -3,6 +3,7 @@ package com.example.salary.web;
 
 import com.example.salary.domain.User;
 import com.example.salary.service.MaService;
+import com.example.salary.service.StuffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,17 +18,28 @@ import javax.servlet.http.HttpSession;
 public class Login {
     @Autowired
     MaService maService;
+    @Autowired
+    StuffService stuffService;
 
     @RequestMapping(value = "/getps")
-    void checkLogin(HttpServletResponse response, @RequestParam(value = "unum")String unum,
-                    @RequestParam(value = "upassword")String upassword) throws Exception{
-        boolean flag = false;
-        User user = maService.queryUser(unum);
-        if (user.getUpassword().equals(upassword)){
-            flag = true;
-        }
-        //密码验证错误传输0，正确传输1
-        response.getWriter().write(flag == false?0:1);
+    String checkLogin(HttpServletResponse response, @RequestParam(value = "unum")String unum,
+                    @RequestParam(value = "upassword")String upassword,HttpSession session) throws Exception{
+
+     User user = stuffService.findUserByUnum(unum);
+        System.out.println(user.toString());
+     try{
+         stuffService.checkLogin(unum,upassword);
+         System.out.println("---登录成功---");
+         session.setAttribute("unum",unum);
+         session.setAttribute("upassword",upassword);
+         session.setAttribute("uname",user.getUname());
+
+         return "../static/html/mainpage.html";
+     }catch (Exception e){
+         System.out.println("登录失败");
+         return "../static/html/onload.html";
+     }
+
     }
 
     @RequestMapping(value = "/modpwd")

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="UTF-8">
     <title>工资管理主页</title>
@@ -27,7 +29,7 @@
                 </dl>
             </li>
 
-            <li class="layui-nav-item"><a href="#" style="text-decoration:none">退出登录</a></li>
+            <li class="layui-nav-item"><a href="http://localhost:8080/html/onload.html" style="text-decoration:none">退出登录</a></li>
         </ul>
 
     </div>
@@ -46,20 +48,28 @@
 				<a href="http://localhost:8080/html/salaryPage.html">我的工资信息</a>
             </li>
             <li class="layui-nav-item">
-				<a  href="http://localhost:8080/html/boardManage.html">公告管理</a>
+				<a href="http://localhost:8080/html/boardPage.html">我的公告</a>
+				<shiro:hasPermission name="sys:rs:board">
 				<dl class="layui-nav-child">
-					<dd><a href="http://localhost:8080/html/boardPage.html">我的公告</a></dd>
+					<dd><a  href="http://localhost:8080/html/boardManage.html">公告管理</a></dd>
 				</dl>
+				</shiro:hasPermission>
             </li>
             <!--管理员工工资，员工信息-->
+			<shiro:hasPermission name="sys:rs:stuff">
             <li class="layui-nav-item">
 				<a href="http://localhost:8080/html/stuffManagePage.html">员工管理</a>
             </li>
+			</shiro:hasPermission>
 <!--			财务管理-->
+			<shiro:hasPermission name="sys:cw:wage">
 			<li class="layui-nav-item"><a href="http://localhost:8080/html/salaryManagePage.html">财务管理</a></li>
+			</shiro:hasPermission>
 
             <!--角色权限管理-->
+			<shiro:hasPermission name="sys:admin">
             <li class="layui-nav-item"><a href="http://localhost:8080/html/powerPage.html">角色管理</a></li>
+			</shiro:hasPermission>
         </ul>
     </div>
 

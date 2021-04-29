@@ -2,6 +2,7 @@ package com.example.salary.mapper;
 
 import com.example.salary.domain.Absence;
 import com.example.salary.domain.Stuff;
+import com.example.salary.domain.User;
 import org.apache.ibatis.annotations.*;
 
 import java.sql.Date;
@@ -9,6 +10,11 @@ import java.util.List;
 
 @Mapper
 public interface StuffMapper {
+    //查询账户密码
+    @Select("select unum,upassword,uname from user" +
+            " where unum = #{unum}")
+    User findUserByUnum(String unum);
+
     //查询所有员工
     @Select("select distinct stuff.unum,uname,gender,position,dname,bankid,stuffwage.basic" +
             " from (stuff left join stuffwage on stuff.unum = stuffwage.unum) " +

@@ -21,7 +21,7 @@ public class StuffInfo {
     //获取所有员工信息
     @RequestMapping(value = "/getAll") String getAll(HttpServletResponse response, HttpSession session,
                                                      @RequestParam(value = "limit")String size, @RequestParam(value = "page")String page)throws Exception{
-        //        String unum = session.getAttribute("unum").toString();
+//                String unum = session.getAttribute("unum").toString();
 
         JSONObject jsonObject = new JSONObject();
         response.setContentType("text/json;charset=utf-8");

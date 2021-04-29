@@ -25,6 +25,25 @@ import java.util.List;
 public class FinancialInfo {
     @Autowired
     FinancialService financialService;
+    @Autowired
+    MaService maService;
+
+
+    //查询用户每月工资
+    @RequestMapping(value = "/getUMWage") String getUMWage(HttpServletResponse response,@RequestParam(value = "unum")String unum,
+                                                           @RequestParam(value = "limit")String size,@RequestParam(value = "page")String page) throws  Exception{
+
+
+        JSONObject jsonObject = new JSONObject();
+        response.setContentType("text/json;charset=utf-8");
+        Integer row = maService.getSize(unum);
+        jsonObject.put("code",0 );
+        jsonObject.put("msg","");
+        jsonObject.put("count",row);
+        jsonObject.put("data", maService.getMonthWage(unum,Integer.parseInt(page),Integer.parseInt(size)));
+        return jsonObject.toString();
+
+    }
 
     //插入工资信息并生成审核单
     @RequestMapping(value = "/insertStuff")void insertStuff(HttpServletResponse response, HttpSession session,
@@ -32,7 +51,7 @@ public class FinancialInfo {
                                                             @RequestParam(value = "month")String month,@RequestParam(value = "basic")String basic,
                                                             @RequestParam(value = "insurance")String insurance,@RequestParam(value = "oname")String oname)throws Exception{
 
-        //        String mnum = session.getAttribute("unum").toString();
+                String mnum = session.getAttribute("unum").toString();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date idate = sdf.parse(month);
         java.sql.Date date = new java.sql.Date(idate.getTime());
@@ -54,7 +73,7 @@ public class FinancialInfo {
         }else {
              content = financialService.insertStuffWage(unum,date,Double.parseDouble(basic),Double.parseDouble(insurance),0,onum);
         }
-        audit = financialService.insertAudit(onum,oname,"2017110445",time,"未校验");
+        audit = financialService.insertAudit(onum,oname,mnum,time,"未校验");
         ext = financialService.insertExtWage(unum,date,0.00,0.00,0.00,0.00,0.00,0.00);
         response.setContentType("text/json;charset=utf-8");
         if (audit != 0 && content != 0){
@@ -67,8 +86,9 @@ public class FinancialInfo {
 
     }
     //按上月发放工资
-    @RequestMapping(value = "/lastMonthWages") void lastMonthWages(HttpServletResponse response)throws Exception{
+    @RequestMapping(value = "/lastMonthWages") void lastMonthWages(HttpServletResponse response,HttpSession session)throws Exception{
 
+        String mnum = session.getAttribute("unum").toString();
         response.setContentType("text/json;charset=utf-8");
         long now = System.currentTimeMillis();
         Date date = new Date();
@@ -120,7 +140,7 @@ public class FinancialInfo {
 
                 financialService.insertExtWage(list.get(i).getUnum(), list.get(i).getMonth(),0.00,0.00,0.00,0.00,0.00,0.00);
             }
-            financialService.insertAudit(onum,"按上月工资发放","2017110445",finish,"未校验");
+            financialService.insertAudit(onum,"按上月工资发放",mnum,finish,"未校验");
             response.setContentType("text/json;charset=utf-8");
             response.getWriter().write(  "1");
         }
@@ -129,9 +149,10 @@ public class FinancialInfo {
     //插入补贴信息并生成审核单
     @RequestMapping(value = "/extra")void insertExtra(HttpServletResponse response,@RequestParam(value = "unum")String unum,
                                                       @RequestParam(value = "date")String date,@RequestParam(value = "sum")String sum,
-                                                      @RequestParam(value = "type")String type,@RequestParam(value = "oname")String oname)throws Exception{
+                                                      @RequestParam(value = "type")String type,@RequestParam(value = "oname")String oname,
+                                                      HttpSession session)throws Exception{
 
-        //        String mnum = session.getAttribute("unum").toString();
+                String mnum = session.getAttribute("unum").toString();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date idate = sdf.parse(date);
         java.sql.Date time = new java.sql.Date(idate.getTime());
@@ -143,7 +164,7 @@ public class FinancialInfo {
         int r2=(int)(Math.random()*(10));
         String onum ="E"+String.valueOf(r1)+String.valueOf(r2)+String.valueOf(now);// 审查单号
         Integer content = financialService.insertExtra(onum,unum,time,type,Double.parseDouble(sum));
-        Integer audit = financialService.insertAudit(onum,oname,"2017110445",ntime,"未校验");
+        Integer audit = financialService.insertAudit(onum,oname,mnum,ntime,"未校验");
         response.setContentType("text/json;charset=utf-8");
         if (audit != 0 && content != 0){
             response.getWriter().write(  "1");
@@ -194,7 +215,7 @@ public class FinancialInfo {
     //审核逻辑
     @RequestMapping(value = "/howAudit")void howAudit(HttpServletResponse response,HttpSession session,
                                                       @RequestParam(value = "onum")String onum, @RequestParam(value = "flag")String flag)throws Exception{
-//        String unum = session.getAttribute("unum").toString();
+        String unum = session.getAttribute("unum").toString();
         //审核时间
         long now = System.currentTimeMillis();
         java.sql.Date time = new java.sql.Date(now);
@@ -205,12 +226,12 @@ public class FinancialInfo {
         //判断哪一类审核单
         if (onum.substring(0,1).equals("B")){
             if (flag.equals("pass")){
-                upd = financialService.passAudit("已通过","2017110457",onum,time);
-                updOpt = financialService.insertOpt(onum,"2017110457","通过",time);
+                upd = financialService.passAudit("已通过",unum,onum,time);
+                updOpt = financialService.insertOpt(onum,unum,"通过",time);
 
             }else if (flag.equals("back")){
-                upd = financialService.passAudit("已退回","2017110457",onum,time);
-                updOpt = financialService.insertOpt(onum,"2017110457","退回",time);
+                upd = financialService.passAudit("已退回",unum,onum,time);
+                updOpt = financialService.insertOpt(onum,unum,"退回",time);
             }
         //补贴单通过后更新extrawage表，，更新审核表和操作表
         }else if (onum.substring(0,1).equals("E")){
@@ -221,11 +242,11 @@ public class FinancialInfo {
                     financialService.updExtraWage(list.get(i).getType(),list.get(i).getSum(),list.get(i).getUnum(),list.get(i).getDate());
                     updExtDetail++;
                 }
-                upd = financialService.passAudit("已通过","2017110457",onum,time);
-                updOpt = financialService.insertOpt(onum,"2017110457","通过",time);
+                upd = financialService.passAudit("已通过",unum,onum,time);
+                updOpt = financialService.insertOpt(onum,unum,"通过",time);
             }else if (flag.equals("back")){
-                upd = financialService.passAudit("已退回","2017110457",onum,time);
-                updOpt = financialService.insertOpt(onum,"2017110457","退回",time);
+                upd = financialService.passAudit("已退回",unum,onum,time);
+                updOpt = financialService.insertOpt(onum,unum,"退回",time);
             }
 
         }else {

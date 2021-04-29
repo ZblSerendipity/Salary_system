@@ -4,7 +4,11 @@ package com.example.salary.service;
 import com.example.salary.domain.Absence;
 import com.example.salary.domain.Salary;
 import com.example.salary.domain.Stuff;
+import com.example.salary.domain.User;
 import com.example.salary.mapper.StuffMapper;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,6 +19,21 @@ import java.util.List;
 public class StuffService {
         @Resource
         StuffMapper stuffMapper;
+
+        public User findUserByUnum(String unum){
+            return stuffMapper.findUserByUnum(unum);
+        }
+        public void  checkLogin(String unum,String upassword)throws Exception{
+            Subject subject = SecurityUtils.getSubject();
+
+            UsernamePasswordToken token = new UsernamePasswordToken(unum,upassword);
+            subject.login(token);
+            System.out.println("验证login");
+            subject.getSession();
+        }
+
+
+
         //查询所有员工
         public List<Stuff> queryAll(Integer count){
 

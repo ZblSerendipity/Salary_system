@@ -50,7 +50,7 @@ public class BoardInfo {
     @RequestMapping(value = "/newBoard")
     void newBoard(HttpServletResponse response,HttpSession session,
                   @RequestParam(value = "title")String title,@RequestParam(value = "content")String content)throws Exception{
-        //        String unum = session.getAttribute("unum").toString();
+                String unum = session.getAttribute("unum").toString();
         //生成公告日期
         long now = System.currentTimeMillis();
         Date time = new Date(now);
@@ -59,7 +59,7 @@ public class BoardInfo {
         int r2=(int)(Math.random()*(10));
         String bnum =String.valueOf(r1)+String.valueOf(r2)+String.valueOf(now);// 公告ID
 
-        Integer flag = boardService.inNewBoard("2017110457",bnum,time,title,content);
+        Integer flag = boardService.inNewBoard(unum,bnum,time,title,content);
         System.out.println(flag);
         response.setContentType("text/json;charset=utf-8");
         response.getWriter().write(flag == 0 ? "0": "1");
