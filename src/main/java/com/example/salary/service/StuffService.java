@@ -8,6 +8,7 @@ import com.example.salary.domain.User;
 import com.example.salary.mapper.StuffMapper;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +52,10 @@ public class StuffService {
         };
         //插入新员工
         public Integer addNewStuff(String unum,String uname,Integer age,String position,String bankid,String pid,String dnum,String gender){
+
+            Md5Hash pass = new Md5Hash("123456");
+
+            stuffMapper.addNewUser(unum,uname,pass.toString());
             return stuffMapper.addNewStuff(unum, uname, position, age, bankid, pid, dnum, gender);
         };
 

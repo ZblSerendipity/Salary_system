@@ -42,8 +42,7 @@ public class MyRealm extends AuthorizingRealm {
         Set<String> rolename = roleService.queryRoleNameByUnum(unum);
         //根据用户名查询当前用户的权限列表
         Set<String> ps = permissionService.queryPermissionsByUnum(unum);
-        System.out.println(ps);
-        System.out.println(rolename);
+
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.setRoles(rolename);
         info.setStringPermissions(ps);

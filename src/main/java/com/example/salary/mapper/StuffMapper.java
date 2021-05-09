@@ -45,6 +45,10 @@ public interface StuffMapper {
     @Insert("insert into stuff " +
             "values(#{unum},#{uname},#{position},#{dnum},#{age},#{bankid},#{pid},#{gender})")
     Integer addNewStuff(String unum,String uname,String position,Integer age,String bankid,String pid,String dnum,String gender);
+    //插入新用户
+    @Insert("insert into user(unum,uname,upassword) " +
+            "values(#{unum},#{uname},#{upassword})")
+    Integer addNewUser(String unum,String uname,String upassword);
 
     @Insert("insert into stuffwage(stuffwage.unum,stuffwage.month.stuffwage.basic,stuffwage.all) " +
             "values(#{unum},#{month},#{basic},#{basic})")

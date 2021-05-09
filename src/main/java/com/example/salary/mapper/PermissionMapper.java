@@ -14,4 +14,6 @@ public interface PermissionMapper {
             "inner join permission on rps.pid = permission.id " +
             "where unum = #{unum}")
     Set<String> queryPermissionsByUnum(String unum);
+
+
 }
