@@ -21,7 +21,11 @@ public class Login {
     MaService maService;
     @Autowired
     StuffService stuffService;
-
+//    @RequestMapping(value = "/security")
+//    String login()
+//    {
+//        return "../static/html/onload";
+//    }
     @RequestMapping(value = "/getps")
     String checkLogin(HttpServletResponse response, @RequestParam(value = "unum")String unum,
                     @RequestParam(value = "upassword")String upassword,HttpSession session) throws Exception{
@@ -35,10 +39,11 @@ public class Login {
          session.setAttribute("upassword",upassword);
          session.setAttribute("uname",user.getUname());
 
-         return "../static/html/mainpage.html";
-     }catch (Exception e){
+         return "../static/html/mainpage";
+     }
+     catch (Exception e){
          System.out.println("登录失败");
-         return "../static/html/onload.html";
+         return "../static/html/fault";
      }
 
     }

@@ -1,6 +1,7 @@
 package com.example.salary.web;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.salary.service.RoleService;
 import com.example.salary.service.StuffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,9 @@ import java.util.Date;
 public class StuffInfo {
     @Autowired
     StuffService stuffService;
+    @Autowired
+    RoleService roleService;
+
     //获取所有员工信息
     @RequestMapping(value = "/getAll") String getAll(HttpServletResponse response, HttpSession session,
                                                      @RequestParam(value = "limit")String size, @RequestParam(value = "page")String page)throws Exception{
@@ -77,6 +81,7 @@ public class StuffInfo {
 
 
         Integer flag = stuffService.addNewStuff(unum,uname,Integer.parseInt(age),position,bankid,pid,dnum,gender);
+        roleService.insertRoles(unum);
         response.setContentType("text/json;charset=utf-8");
         response.getWriter().write(flag != 0?"1":"0");
     }

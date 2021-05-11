@@ -1,16 +1,19 @@
 package com.example.salary.domain;
 
+import java.util.Set;
+
 public class Role {
     private String unum;
     private String uname;
-    private String role;
+    private Set<String> role;
+
 
     @Override
     public String toString() {
         return "Role{" +
                 "unum='" + unum + '\'' +
                 ", uname='" + uname + '\'' +
-                ", role='" + role + '\'' +
+                ", role=" + role +
                 '}';
     }
 
@@ -30,18 +33,22 @@ public class Role {
         this.uname = uname;
     }
 
-    public String getRole() {
+    public Set<String> getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Set<String> role) {
         this.role = role;
     }
 
-    public Role(String unum, String uname, String role) {
+    public Role(String unum, String uname, Set<String> role) {
         this.unum = unum;
         this.uname = uname;
         this.role = role;
+    }
+    public Role(String unum, String uname) {
+        this.unum = unum;
+        this.uname = uname;
     }
 
     public Role() {

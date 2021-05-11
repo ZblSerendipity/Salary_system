@@ -66,6 +66,10 @@ public class ShiroConfig {
         Map<String,String> filterMap = new HashMap<>();
 
         filterMap.put("/","anon");
+        filterMap.put("/html/css/**","anon");
+        filterMap.put("/html/fonts/**","anon");
+        filterMap.put("/html/img/**","anon");
+        filterMap.put("/html/js/**","anon");
         filterMap.put("/layui/**","anon");
         filterMap.put("/echarts/**","anon");
         filterMap.put("/html/onload.html","anon");
@@ -81,7 +85,7 @@ public class ShiroConfig {
 
         filter.setFilterChainDefinitionMap(filterMap);
         filter.setLoginUrl("/html/onload.html");
-        filter.setUnauthorizedUrl("/html/onload.html");
+        filter.setUnauthorizedUrl("/html/fault.html");
 
         return filter;
     }

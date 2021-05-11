@@ -78,65 +78,21 @@
 			<div class="layui-tab layui-tab-card" style="height: 500px;">
 			  <ul class="layui-tab-title">
 			    <li class="layui-this">人员一览</li>
-			    <li>权限修改</li>
+<!--			    <li>权限修改</li>-->
 			  </ul>
 			  <div class="layui-tab-content" style="height: 100px;" >
 			  	
 			  	<!--人员一览-->
 			    <div class="layui-tab-item layui-show" style="padding: -40px;">
-					<table class="layui-hide" id="table" ></table>
+					<table class="layui-hide" id="table"lay-filter="test"></table>
 					<script type="text/html" id="barDemo">
 						<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看权限</a>
-						<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="modify">修改权限</a>
+						<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="add">增加权限</a>
+						<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除权限</a>
 					</script>
 			    </div>
 			    
-			    <!--权限修改-->
-			    <div class="layui-tab-item">
-			    	
-			    	<fieldset class="layui-elem-field layui-field-title" style="margin: 20px;">
-					  <legend style="font-size: larger;">说明：1.选择职员；2.选择修改后的职位（请严格按照规范操作，否则后果自负）</legend>
-					</fieldset>
-					
-					<div class="layui-card">
-			    	<div class="layui-card-body" style="padding-top: 40px;">
-			    	<form class="layui-form" action="" method="post">
-					  <div class="layui-form-item">
-					    <div class="layui-inline">
-					      <label class="layui-form-label" style="width: 100px;">1.条件：</label>
-					      <div class="layui-input-inline layui-form">
-					        <select name="condition" id="condition" lay-verify="required" lay-search="">
-					          <option value="">直接选择或搜索选择</option>
-					        </select>
-					      </div>
-					    </div>
-					    
-					    <div class="layui-inline">
-					      <label class="layui-form-label"  style="width: 100px;">2.职位：</label>
-					      <div class="layui-input-inline">
-					        <select name="role" id="role" lay-verify="required" lay-search="">
-					          <option value="">直接选择或搜索选择</option>
-					          <option value="3">管理员</option>
-					          <option value="11">普通员工</option>
-					        </select>
-					      </div>
-					    </div>
-					  </div>
-					  
-					  <div class="layui-form-item">
-					    <div class="layui-inline">
-					      <div class="layui-input-inline">
-					      	<label class="layui-form-label"  style="width: 100px;">
-					      		<input type="submit" class="layui-btn" lay-submit="" lay-filter="L_submit" value="提交修改" style="margin-left: 85px;"/>
-					      	</label>
-					      </div>
-					    </div>
-					  </div>
-					</form>
-			    	</div>
-			    	</div>
-			    	
-			    </div>
+
 			  </div>
 			</div>
 	    	
@@ -174,17 +130,167 @@
 	  
 	  table.render({
 	    elem: '#table'
-	    ,url:'/Info/getRInfo'
+	    ,url:'/Roles/getRoles'
+		  ,page: true
+		  ,limit:10
 	    ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
 	    ,cols: [
 	    		[
-	      {field:'stu_num', title: '职工号', sort: true, align: 'center'}
-	      ,{field:'name', title: '姓名', align: 'center'} //width 支持：数字、百分比和不填写。你还可以通过 minWidth 参数局部定义当前单元格的最小宽度，layui 2.2.1 新增
-	      ,{field:'region', title: '角色', sort: true, align: 'center'}
-	      ,{fixed: 'right', width:200,  toolbar: '#barDemo',title:'操作'}
+	      {field:'unum', title: '职工号', sort: true, align: 'center'}
+	      ,{field:'uname', title: '姓名', align: 'center'} //width 支持：数字、百分比和不填写。你还可以通过 minWidth 参数局部定义当前单元格的最小宽度，layui 2.2.1 新增
+	      ,{field:'role', title: '角色', sort: true, align: 'center'}
+	      ,{fixed: 'right', width:300,  toolbar: '#barDemo',title:'操作'}
 	    	]
 		  ]
 	  });
+
+			//监听工具条
+			table.on('tool(test)', function(obj){
+				var data = obj.data;
+				var json = eval(data);
+				if(obj.event === 'detail'){
+					$.post(
+							"/Roles/getPermission",
+							{unum : json.unum},
+							function (datas) {
+								var content = eval(datas)
+								if (datas != "0"){
+
+									layer.msg('权限内容：'+ content);
+								}else {
+									layer.msg('权限内容：无');
+
+								}
+
+							}
+					)
+
+				} else if(obj.event === 'add'){
+					var util = layui.util;
+					layer.open({
+						type: 1
+						,title: '角色管理'
+						,closeBtn: false
+						,area: '300px;'
+						,shade: 0.8
+						,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+						,btn: ['登记', '取消']
+						,btnAlign: 'c'
+						// ,offset:'b'
+						,moveType: 1 //拖拽模式，0或者1
+						,content:  '<div style="padding: 50px; line-height: 22px; background-color: #393D49;  font-weight: 300;">' +
+								'<form class="layui-form" id="change_password">' +
+								'<input type="text" name="unum" id="fnum" lay-verify="num" disabled = "disabled" autocomplete="off" placeholder="工号" class="layui-input"  style="color: #000000"><br>'+
+								'<input type="text" name="uname" id="fname" lay-verify="name" disabled = "disabled" autocomplete="off" placeholder="姓名" class="layui-input"  style="color: #000000"><br>'+
+								'<select  name="role" id="role"  lay-verify="role" lay-search="">' +
+								'<option value="02">普通员工</option>' +
+								'<option value="03">财务</option>' +
+								'<option value="04">人事</option>' +
+								'</select>'+
+								'<br><br><br><br><br><br>'+
+								'</form>' +
+								'</div>'
+						,success: function(layero) {
+							layui.use('form', function(){
+								var form = layui.form;
+								form.render();
+							});
+
+							var fnum = json.unum;
+							var fname = json.uname;
+							$("#fnum").val(fnum);
+							$("#fname").val(fname);
+
+							var btn = layero.find('.layui-layer-btn');
+							btn.find('.layui-layer-btn0').click(function () {
+								var role = util.escape($("#role").val());
+
+								$.ajax({
+									type: 'POST',
+									url: "/Roles/add",
+									data: {role:role,unum:json.unum},
+									success: function (data) {
+										if (data == "-1") {
+											layer.alert("请勿重复添加角色");
+										} else if (data == "0") {
+											layer.alert("添加出错！请重新尝试。");
+										} else if (data == "1") {
+											layer.alert("角色信息添加成功");
+										}
+									},
+									error: function () {
+										layer.alert("添加失败!请尝试重新添加。");
+									}
+								})
+
+							})
+						}
+					});
+
+				}else if(obj.event === 'del'){
+					var util = layui.util;
+					layer.open({
+						type: 1
+						,title: '角色管理'
+						,closeBtn: false
+						,area: '300px;'
+						,shade: 0.8
+						,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+						,btn: ['删除', '取消']
+						,btnAlign: 'c'
+						// ,offset:'b'
+						,moveType: 1 //拖拽模式，0或者1
+						,content:  '<div style="padding: 50px; line-height: 22px; background-color: #393D49;  font-weight: 300;">' +
+								'<form class="layui-form" id="change_password">' +
+								'<input type="text" name="unum" id="fnum" lay-verify="num" disabled = "disabled" autocomplete="off" placeholder="工号" class="layui-input"  style="color: #000000"><br>'+
+								'<input type="text" name="uname" id="fname" lay-verify="name" disabled = "disabled" autocomplete="off" placeholder="姓名" class="layui-input"  style="color: #000000"><br>'+
+								'<select  name="role" id="role"  lay-verify="role" lay-search="">' +
+								'<option value="02">普通员工</option>' +
+								'<option value="03">财务</option>' +
+								'<option value="04">人事</option>' +
+								'</select>'+
+								'<br><br><br><br><br><br>'+
+								'</form>' +
+								'</div>'
+						,success: function(layero) {
+							layui.use('form', function(){
+								var form = layui.form;
+								form.render();
+							});
+
+							var fnum = json.unum;
+							var fname = json.uname;
+							$("#fnum").val(fnum);
+							$("#fname").val(fname);
+
+							var btn = layero.find('.layui-layer-btn');
+							btn.find('.layui-layer-btn0').click(function () {
+								var role = util.escape($("#role").val());
+
+								$.ajax({
+									type: 'POST',
+									url: "/Roles/del",
+									data: {role:role,unum:json.unum},
+									success: function (data) {
+										if (data == "-1") {
+											layer.alert("该用户没有此类角色权限");
+										} else if (data == "0") {
+											layer.alert("删除出错！请重新尝试。");
+										} else if (data == "1") {
+											layer.alert("角色信息删除成功");
+										}
+									},
+									error: function () {
+										layer.alert("添加失败!请尝试重新添加。");
+									}
+								})
+
+							})
+						}
+					});
+				}
+			});
+
 	});
 </script>
 </html>
