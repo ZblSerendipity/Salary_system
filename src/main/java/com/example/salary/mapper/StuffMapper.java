@@ -59,6 +59,12 @@ public interface StuffMapper {
             "where unum = #{unum}")
     Integer delStuff(String unum);
 
+    @Delete("delete from user " +
+            "where unum = #{unum}")
+    Integer delUser(String unum);
+    @Delete("delete from urs " +
+            "where uid = #{unum}")
+    Integer delUrs(String unum);
     //根据员工号查找员工姓名
     @Select("select uname from user " +
             "where unum = #{unum}")
@@ -76,7 +82,7 @@ public interface StuffMapper {
 
     @Update("update stuffwage " +
             "set absence = #{count} " +
-            "where unum = #{unum} and TIMESTAMPDIFF(Day,stuffwage.month,#{date}) <= 30 and TIMESTAMPDIFF(Day,stuffwage.month,#{date}) <= 0 ")
+            "where unum = #{unum} and TIMESTAMPDIFF(Day,stuffwage.month,#{date}) >= -30 and TIMESTAMPDIFF(Day,stuffwage.month,#{date}) <= 0 ")
     Integer updateAbs(String unum,Date date,Integer count);
 
     @Select("select count(*) from absence" +
@@ -109,7 +115,10 @@ public interface StuffMapper {
             "values(#{onum},#{mnum},#{status},#{passnum},#{date})")
     Integer insOrder(String onum,String mnum,String status,String passnum,Date date);
 
-
+    //插入银行卡信息
+    @Insert("insert into bank " +
+            "values(#{bankid},#{banksort},#{bankplace})")
+    Integer insertBank(String bankid,String banksort,String bankplace);
 
 
 

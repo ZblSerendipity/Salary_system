@@ -77,10 +77,12 @@ public class StuffInfo {
                                                             @RequestParam(value = "unum")String unum,@RequestParam(value = "uname")String uname,
                                                             @RequestParam(value = "age")String age,@RequestParam(value = "position")String position,
                                                             @RequestParam(value = "pid")String pid,@RequestParam(value = "bankid")String bankid,
-                                                            @RequestParam(value = "gender")String gender,@RequestParam(value = "dnum")String dnum)throws Exception{
+                                                            @RequestParam(value = "gender")String gender,@RequestParam(value = "dnum")String dnum,
+                                                            @RequestParam(value = "banksort")String banksort,@RequestParam(value = "bankplace")String bankplace)throws Exception{
 
 
         Integer flag = stuffService.addNewStuff(unum,uname,Integer.parseInt(age),position,bankid,pid,dnum,gender);
+        stuffService.insertBank(bankid, banksort, bankplace);
         roleService.insertRoles(unum);
         response.setContentType("text/json;charset=utf-8");
         response.getWriter().write(flag != 0?"1":"0");

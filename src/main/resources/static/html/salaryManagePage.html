@@ -80,6 +80,7 @@
 			<div class="layui-tab layui-tab-card" >
 				<ul class="layui-tab-title">
 					<li class="layui-this">财务发放</li>
+					<li>审核单进度</li>
 					<shiro:hasPermission name="sys:admin">
 					<li>财务报表审核</li>
 					</shiro:hasPermission>
@@ -114,11 +115,16 @@
 								</div>
 								<button class="layui-btn" data-type="reload">搜索</button>
 							</div>
-							<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-								<legend>审核单状态表</legend>
-							</fieldset>
-							<table class="layui-hide" id="auditing-tab" lay-filter="auditing-tab"></table>
+
 						</div>
+
+					</div>
+					<div class="layui-tab-item">
+
+						<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+							<legend>审核单状态表</legend>
+						</fieldset>
+						<table class="layui-hide" id="auditing-tab" lay-filter="auditing-tab"></table>
 
 					</div>
 					<div class="layui-tab-item">
@@ -172,7 +178,7 @@
 				,{field:'mnum', title: '员工号', sort: true, width:180}
 				,{field:'mname', title: '提交财务', width:100}
 				,{field:'subtime', title: '时间', width:120,sort: true}
-				,{field:'status', title: '审核状态', width:120}
+				,{field:'status', title: '审核状态', width:120,sort:true}
 				,{fixed:'right', title: '操作',toolbar: '#auditDemo'}
 			]
 			]
@@ -219,9 +225,9 @@
 								, cols: [
 										[
 									{field: 'unum', width: '20%', title: 'ID', sort: true}
-									, {field: 'uname', width: '10%', title: '姓名'}
+									, {field: 'uname', width: '20%', title: '姓名'}
 									, {field: 'basic', width: '20%', title: '基础工资', sort: true}
-									, {field: 'basic', width: '20%', title: '五险一金', sort: true}
+									, {field: 'insurance', width: '20%', title: '五险一金', sort: true}
 									, {field: 'month', width: '20%', title: '发放日期'}
 								]
 								]

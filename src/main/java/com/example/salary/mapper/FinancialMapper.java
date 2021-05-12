@@ -87,7 +87,7 @@ public interface FinancialMapper {
     //更新extrawage
     @Update("update extrawage" +
             " set ${type} = #{sum} " +
-            "where unum = #{unum} and TIMESTAMPDIFF(Day,extrawage.date,#{date}) <= 31 and TIMESTAMPDIFF(Day,extrawage.date,#{date}) <= 0")
+            "where unum = #{unum} and TIMESTAMPDIFF(Day,extrawage.date,#{date}) >= -30 and TIMESTAMPDIFF(Day,extrawage.date,#{date}) <= 0")
     Integer updExtraWage(String type,Double sum,String unum,Date date);
     //查询上月的工资发放情况
     @Select("select * from stuffwage " +

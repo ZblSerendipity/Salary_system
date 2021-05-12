@@ -48,6 +48,8 @@ public class StuffService {
 
         //删除员工
         public Integer delStuff(String unum){
+            stuffMapper.delUrs(unum);
+            stuffMapper.delUser(unum);
             return stuffMapper.delStuff(unum);
         };
         //插入新员工
@@ -113,5 +115,10 @@ public class StuffService {
     //查询对应工号的员工
     public List<Stuff> queryStuff(String unum){
         return stuffMapper.queryStuff(unum);
+    };
+
+    //插入银行卡信息
+    public  Integer insertBank(String bankid,String banksort,String bankplace){
+        return stuffMapper.insertBank(bankid, banksort, bankplace);
     };
 }

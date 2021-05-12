@@ -101,8 +101,6 @@
                     </div>
                     <div class="layui-tab-item">
 
-
-
                             <div class="layui-card">
                                 <div class="layui-card-header">添加员工</div>
                                 <div class="layui-card-body">
@@ -110,19 +108,31 @@
                                         <form class="layui-form" id="stuffform" action="" method="post">
                                             <div class="layui-form-item">
                                                 <div class="layui-inline">
-                                                    <label class="layui-form-label" style="width: 100px;">姓名：</label>
+                                                    <label class="layui-form-label" style="width: 75px;">姓名：</label>
                                                     <div class="layui-input-inline">
                                                         <input type="text" name="name_new" id="name_new"  class="layui-input">
                                                     </div>
                                                 </div>
                                                 <div class="layui-inline">
-                                                    <label class="layui-form-label"  style="width: 100px;">性别：</label>
+                                                    <label class="layui-form-label"  style="width: 100px;">身份证号：</label>
+                                                    <div class="layui-input-inline">
+                                                        <input type="text" onchange="change()" name="pid_new" id="pid_new" lay-verify="identity"  class="layui-input">
+                                                    </div>
+                                                </div>
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label"  style="width: 75px;">性别：</label>
                                                     <div class="layui-input-inline">
                                                         <select name="modules"id="gender_new" lay-verify="required" lay-search="">
                                                             <option value="">性别</option>
                                                             <option value="男">男</option>
                                                             <option value="女">女</option>
                                                         </select>
+                                                    </div>
+                                                </div>
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label"  style="width: 75px;">年龄：</label>
+                                                    <div class="layui-input-inline">
+                                                        <input type="text" name="age_new" id="age_new" lay-verify="age_new" class="layui-input">
                                                     </div>
                                                 </div>
 
@@ -146,10 +156,6 @@
                                                         </select>
                                                     </div>
                                                 </div>
-
-                                            </div>
-
-                                            <div class="layui-form-item">
                                                 <div class="layui-inline">
                                                     <label class="layui-form-label"  style="width: 100px;">职位：</label>
                                                     <div class="layui-input-inline">
@@ -157,20 +163,19 @@
                                                             <option value="">职位</option>
                                                             <option value="经理">经理</option>
                                                             <option value="普通员工">普通员工</option>
-                                                            <!--                                                <option value="04">人事部</option>-->
-                                                            <!--                                                <option value="05">法务部</option>-->
+
                                                         </select>
 
                                                     </div>
                                                 </div>
-                                                <div class="layui-inline">
-                                                    <label class="layui-form-label"  style="width: 100px;">年龄：</label>
-                                                    <div class="layui-input-inline">
-                                                        <input type="text" name="age_new" id="age_new" lay-verify="age_new" class="layui-input">
-                                                    </div>
-                                                </div>
 
                                             </div>
+
+<!--                                            <div class="layui-form-item">-->
+<!--                                               -->
+
+
+<!--                                            </div>-->
 
                                             <div class="layui-form-item">
 
@@ -181,11 +186,24 @@
                                                     </div>
                                                 </div>
                                                 <div class="layui-inline">
-                                                    <label class="layui-form-label"  style="width: 100px;">身份证号：</label>
+                                                    <label class="layui-form-label"  style="width: 100px;">银行卡商：</label>
                                                     <div class="layui-input-inline">
-                                                        <input type="text" name="pid_new" id="pid_new" lay-verify="pid_new"  class="layui-input">
+                                                        <select name="modules"id="banksort" lay-verify="required" lay-search="">
+                                                            <option value="">选择银行类型</option>
+                                                            <option value="中国建设银行">中国建设银行</option>
+                                                            <option value="中国工商银行">中国工商银行</option>
+                                                            <option value="中国农业银行">中国农业银行</option>
+                                                            <option value="中国招商银行">中国招商银行</option>
+                                                        </select>
                                                     </div>
                                                 </div>
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label"  style="width: 100px;">开户地：</label>
+                                                    <div class="layui-input-inline">
+                                                        <input type="text" name="bankplace" id="bankplace"  class="layui-input">
+                                                    </div>
+                                                </div>
+
                                             </div>
 
 
@@ -250,6 +268,32 @@
 
 <script type="text/javascript">
 
+    function change(){
+        var id = $("#pid_new").val();
+        console.log(id);
+        if (parseInt(id.slice(-2,-1)) % 2 == 1){
+            $("#gender_new").val("男");
+            console.log("男");
+        }else {
+            $("#gender_new").val("女");
+            console.log("女");
+        };
+        layui.use('form',function () {
+            var form = layui.form;
+            form.render("select");
+        });
+        var strBirthday = "";
+        strBirthday = id.substr(6, 4) + "/" + id.substr(10, 2) + "/" + id.substr(12, 2);
+        var birthDate = new Date(strBirthday);
+        var nowDateTime = new Date();
+        var age = nowDateTime.getFullYear() - birthDate.getFullYear();
+        if (nowDateTime.getMonth() < birthDate.getMonth() || (nowDateTime.getMonth() == birthDate.getMonth() && nowDateTime.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        console.log(age);
+        $("#age_new").val(age);
+    }
+
     layui.use('laydate', function(){
         var laydate = layui.laydate;
 
@@ -294,19 +338,29 @@
 
         //监听提交
         form.on('submit(formDemo)', function(data){
+
+
             var unum = $("#unum_new").val();
             var uname = $("#name_new").val();
             var pid = $("#pid_new").val();
+
+
             var bankid = $("#bankid_new").val();
             var age = $("#age_new").val();
             var position = $("#position_new").val();
             var department = $("#department_new").val();
             var gender = $("#gender_new").val();
 
+
+
+
+            var bankplace = $("#bankplace").val();
+            var banksort = $("#banksort").val();
+
             $.ajax({
                 type:'POST',
                 url:"/stuff/addNewStuff",
-                data:{unum:unum,uname:uname,pid:pid,bankid:bankid,age:age,position:position,dnum:department,gender:gender},
+                data:{unum:unum,uname:uname,pid:pid,bankid:bankid,age:age,position:position,dnum:department,gender:gender,bankplace:bankplace,banksort:banksort},
                 success:function(data){
                     layer.alert("添加成功!");
                     $("#stuffform")[0].reset();

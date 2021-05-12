@@ -31,6 +31,9 @@ public class Login {
                     @RequestParam(value = "upassword")String upassword,HttpSession session) throws Exception{
 
      User user = stuffService.findUserByUnum(unum);
+     if (user == null){
+         return "../static/html/fault";
+     }
         System.out.println(user.toString());
      try{
          stuffService.checkLogin(unum,upassword);
